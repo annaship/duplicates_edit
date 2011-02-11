@@ -16,21 +16,21 @@ function duplicates_edit_page()
 function duplicates_edit_form($form_state) {
   $form = array();
 
-  $form['persons']['1'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('First node'),
-    '#tree' => TRUE,
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-  );
-
-    $form['persons']['2'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Second node'),
-    '#tree' => TRUE,
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-  );
+//  $form['persons']['1'] = array(
+//    '#type' => 'fieldset',
+//    '#title' => t('First node'),
+//    '#tree' => TRUE,
+//    '#collapsible' => TRUE,
+//    '#collapsed' => FALSE,
+//  );
+//
+//    $form['persons']['2'] = array(
+//    '#type' => 'fieldset',
+//    '#title' => t('Second node'),
+//    '#tree' => TRUE,
+//    '#collapsible' => TRUE,
+//    '#collapsed' => FALSE,
+//  );
 
   $form = person_subform($form, '1');
   $form = person_subform($form, '2');
@@ -45,19 +45,20 @@ function duplicates_edit_form($form_state) {
   return $form;
 }
 
-function person_subform($form, $role) {
+function person_subform($form, $number) {
   $states       = states();
   $country_list = country_list();
 
-//  $form['persons'][$role] = array(
-//    '#type' => 'fieldset',
-//    '#title' => t($role . ' node'),
-//    '#tree' => TRUE,
-//    '#collapsible' => TRUE,
-//    '#collapsed' => FALSE,
-//  );
+  $number == '1' ? $ord_number = 'First' : $ord_number = 'Second';
+  $form['persons'][$number] = array(
+    '#type' => 'fieldset',
+    '#title' => t($ord_number . ' node'),
+    '#tree' => TRUE,
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
 
-  $form['persons'][$role]['organization'] = array (
+  $form['persons'][$number]['organization'] = array (
     '#type'  => 'textfield',
     '#title' => t('organization'),
 //     '#default_value' => $organization,
@@ -65,7 +66,7 @@ function person_subform($form, $role) {
     '#maxlength' => 60,
     );
 
-  $form['persons'][$role]['address'] = array (
+  $form['persons'][$number]['address'] = array (
     '#type'  => 'textfield',
     '#title' => t('address'),
 //     '#default_value' => $address,
@@ -73,7 +74,7 @@ function person_subform($form, $role) {
     '#maxlength' => 100,
     );
 
-  $form['persons'][$role]['city'] = array (
+  $form['persons'][$number]['city'] = array (
     '#type'  => 'textfield',
     '#title' => t('city'),
 //     '#default_value' => $city,
@@ -81,14 +82,14 @@ function person_subform($form, $role) {
     '#maxlength' => 60,
     );
 
-  $form['persons'][$role]['state'] = array(
+  $form['persons'][$number]['state'] = array(
     '#type' => 'select',
     '#title' => t('state'),
 //     '#default_value' => $state,
     '#options' => $states,
   );
 
-  $form['persons'][$role]['zipcode'] = array (
+  $form['persons'][$number]['zipcode'] = array (
     '#type'  => 'textfield',
     '#title' => t('zipcode'),
 //     '#default_value' => $zipcode,
@@ -96,14 +97,14 @@ function person_subform($form, $role) {
     '#maxlength' => 60,
     );
 
-  $form['persons'][$role]['country'] = array(
+  $form['persons'][$number]['country'] = array(
     '#type' => 'select',
     '#title' => t('country'),
 //     '#default_value' => $country,
     '#options' => $country_list,
   );
 
-  $form['persons'][$role]['phone'] = array (
+  $form['persons'][$number]['phone'] = array (
     '#type'  => 'textfield',
     '#title' => t('phone'),
 //     '#default_value' => $phone,
@@ -111,7 +112,7 @@ function person_subform($form, $role) {
     '#maxlength' => 60,
     );
 
-  $form['persons'][$role]['fax'] = array (
+  $form['persons'][$number]['fax'] = array (
     '#type'  => 'textfield',
     '#title' => t('fax'),
 //     '#default_value' => $fax,
@@ -119,12 +120,12 @@ function person_subform($form, $role) {
     '#maxlength' => 60,
     );
 
-  $form['persons'][$role]['role'] = array(
+  $form['persons'][$number]['role'] = array(
     '#type' => 'value',
-    '#value' => $role_title,
+    '#value' => $number_title,
   );
 
-  $form['persons'][$role]['email'] = array (
+  $form['persons'][$number]['email'] = array (
     '#type'  => 'textfield',
     '#title' => t('email'),
 //     '#default_value' => $email,
@@ -135,7 +136,7 @@ function person_subform($form, $role) {
 
   // Commented fields are here in case we will need them
 
-  // $form['persons'][$role]['first_name'] = array (
+  // $form['persons'][$number]['first_name'] = array (
   //   '#type'  => 'textfield',
   //   '#title' => t('first_name'),
 //   //   '#default_value' => $first_name,
@@ -143,7 +144,7 @@ function person_subform($form, $role) {
   //   '#maxlength' => 60,
   //   );
   //
-  // $form['persons'][$role]['last_name'] = array (
+  // $form['persons'][$number]['last_name'] = array (
   //   '#type'  => 'textfield',
   //   '#title' => t('last_name'),
 //   //   '#default_value' => $last_name,
@@ -151,7 +152,7 @@ function person_subform($form, $role) {
   //   '#maxlength' => 60,
   //   );
 
-  // $form['persons'][$role]['personid'] = array (
+  // $form['persons'][$number]['personid'] = array (
   //   '#type'  => 'textfield',
   //   '#title' => t('personid'),
 //   //   '#default_value' => $personid,
@@ -238,7 +239,7 @@ function person_subform($form, $role) {
 ////
 ////  $form['nodes'][$number] = array(
 ////   '#type' => 'fieldset',
-////   '#title' => t($role_title),
+////   '#title' => t($number_title),
 ////   '#tree' => TRUE,
 ////   '#collapsible' => TRUE,
 ////   '#collapsed' => FALSE,
@@ -308,7 +309,7 @@ function person_subform($form, $role) {
 //
 //  $form['nodes'][$number]['role'] = array(
 //   '#type' => 'value',
-//   '#value' => $role_title,
+//   '#value' => $number_title,
 //  );
 //
 //  $form['nodes'][$number]['email'] = array (
