@@ -1,8 +1,10 @@
 <?php
 
+require_once('duplicates_edit_arrays.inc');
+
 function duplicates_edit_page()
 {
-//  $checked_nides = variable_get('checked_nides', '');
+//  $checked_nides = $checked_nides', ',
 //  dpm('HERE! duplicates_edit_page');
 //
 //  dpr($checked_nides);
@@ -14,37 +16,330 @@ function duplicates_edit_page()
 function duplicates_edit_form($form_state) {
   $form = array();
 
-  $form['nodes']['1'] = array(
+  $form['acronym'] = array(
+    '#type'  => 'textfield',
+    '#title' => t('Site name acronym'),
+    // '#required'  => TRUE,
+    '#size'  => 3,
+    '#maxlength' => 3,
+//    '#default_value' => $acronym', $last_settings['last_acronym,
+    // '#description' => t('Site name acronym'),
+  );
+
+  $form['persons'] = array(
     '#type' => 'fieldset',
-    '#title' => t('First Node'),
+    '#title' => t('Metadata Provider and Publisher'),
     '#tree' => TRUE,
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
 
-  $form['nodes']['1']['name'] = array (
-    '#type'  => 'textfield',
-    '#title' => t('Name'),
-    '#default_value' => 'Nlll',
-    '#size'  => 60,
-    '#maxlength' => 60,
-  );
+  $form = person_subform($form, '1');
+  $form = person_subform($form, '2');
 
-  $form['nodes']['2'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Second Node'),
-    '#tree' => TRUE,
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-  );
+  // $form_state['redirect'] = array('page1', 'id=' . $form_state['values']['index_search']);
 
-  $form['nodes']['2']['name'] = array (
-    '#type'  => 'textfield',
-    '#title' => t('Name'),
-    '#default_value' => 'Nlll',
-    '#size'  => 60,
-    '#maxlength' => 60,
-  );
+  $form['submit'] = array (
+    '#type' => 'submit',
+    '#value' => t('Create'),
+    );
 
-    return $form;
+  return $form;
 }
+
+function person_subform($form, $role) {
+  $states       = states();
+  $country_list = country_list();
+
+
+  $person_role_value = 'Metadata Provider';
+
+  $form['persons'][$role] = array(
+    '#type' => 'fieldset',
+    '#title' => t($role_title),
+    '#tree' => TRUE,
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['persons'][$role]['organization'] = array (
+    '#type'  => 'textfield',
+    '#title' => t('organization'),
+//     '#default_value' => $organization,
+    '#size'  => 60,
+    '#maxlength' => 60,
+    );
+
+  $form['persons'][$role]['address'] = array (
+    '#type'  => 'textfield',
+    '#title' => t('address'),
+//     '#default_value' => $address,
+    '#size'  => 60,
+    '#maxlength' => 100,
+    );
+
+  $form['persons'][$role]['city'] = array (
+    '#type'  => 'textfield',
+    '#title' => t('city'),
+//     '#default_value' => $city,
+    '#size'  => 60,
+    '#maxlength' => 60,
+    );
+
+  $form['persons'][$role]['state'] = array(
+    '#type' => 'select',
+    '#title' => t('state'),
+//     '#default_value' => $state,
+    '#options' => $states,
+  );
+
+  $form['persons'][$role]['zipcode'] = array (
+    '#type'  => 'textfield',
+    '#title' => t('zipcode'),
+//     '#default_value' => $zipcode,
+    '#size'  => 60,
+    '#maxlength' => 60,
+    );
+
+  $form['persons'][$role]['country'] = array(
+    '#type' => 'select',
+    '#title' => t('country'),
+//     '#default_value' => $country,
+    '#options' => $country_list,
+  );
+
+  $form['persons'][$role]['phone'] = array (
+    '#type'  => 'textfield',
+    '#title' => t('phone'),
+//     '#default_value' => $phone,
+    '#size'  => 60,
+    '#maxlength' => 60,
+    );
+
+  $form['persons'][$role]['fax'] = array (
+    '#type'  => 'textfield',
+    '#title' => t('fax'),
+//     '#default_value' => $fax,
+    '#size'  => 60,
+    '#maxlength' => 60,
+    );
+
+  $form['persons'][$role]['role'] = array(
+    '#type' => 'value',
+    '#value' => $role_title,
+  );
+
+  $form['persons'][$role]['email'] = array (
+    '#type'  => 'textfield',
+    '#title' => t('email'),
+//     '#default_value' => $email,
+    // '#required'  => TRUE,
+    '#size'  => 60,
+    '#maxlength' => 60,
+    );
+
+  // Commented fields are here in case we will need them
+
+  // $form['persons'][$role]['first_name'] = array (
+  //   '#type'  => 'textfield',
+  //   '#title' => t('first_name'),
+//   //   '#default_value' => $first_name,
+  //   '#size'  => 60,
+  //   '#maxlength' => 60,
+  //   );
+  //
+  // $form['persons'][$role]['last_name'] = array (
+  //   '#type'  => 'textfield',
+  //   '#title' => t('last_name'),
+//   //   '#default_value' => $last_name,
+  //   '#size'  => 60,
+  //   '#maxlength' => 60,
+  //   );
+
+  // $form['persons'][$role]['personid'] = array (
+  //   '#type'  => 'textfield',
+  //   '#title' => t('personid'),
+//   //   '#default_value' => $personid,
+  //   '#size'  => 60,
+  //   '#maxlength' => 60,
+  //   );
+
+  return $form;
+}
+
+
+//
+//function duplicates_edit_form($form_state) {
+//  $form = array();
+//
+////  $form['persons'] = array(
+////    '#type' => 'fieldset',
+////    '#title' => t('Metadata Provider and Publisher'),
+////    '#tree' => TRUE,
+////    '#collapsible' => TRUE,
+////    '#collapsed' => FALSE,
+////  );
+//
+//
+//  $form['nodes']['1'] = array(
+//    '#type' => 'fieldset',
+//    '#title' => t('First Node'),
+//    '#tree' => TRUE,
+//    '#collapsible' => TRUE,
+//    '#collapsed' => FALSE,
+//  );
+//
+////  $form['nodes']['1']['name'] = array (
+////    '#type'  => 'textfield',
+////    '#title' => t('Name'),
+// ////    '#default_value' => 'Nlll',
+////    '#size'  => 60,
+////    '#maxlength' => 60,
+////  );
+////
+//  $form['nodes']['2'] = array(
+//    '#type' => 'fieldset',
+//    '#title' => t('Second Node'),
+//    '#tree' => TRUE,
+//    '#collapsible' => TRUE,
+//    '#collapsed' => FALSE,
+//  );
+//
+////  $form['nodes']['2']['name'] = array (
+////    '#type'  => 'textfield',
+////    '#title' => t('Name'),
+// ////    '#default_value' => 'Nlll',
+////    '#size'  => 60,
+////    '#maxlength' => 60,
+////  );
+//
+//  /*
+//   *   $form['persons'] = array(
+//    '#type' => 'fieldset',
+//    '#title' => t('Metadata Provider and Publisher'),
+//    '#tree' => TRUE,
+//    '#collapsible' => TRUE,
+//    '#collapsed' => FALSE,
+//  );
+//
+//  $form = person_subform($form, 'metadataProvider');
+//  $form = person_subform($form, 'publisher');
+//   */
+//
+//  $form = person_subform($form, '1');
+//  $form = person_subform($form, '2');
+//
+//  // $form_state['redirect'] = array('page1', 'id=' . $form_state['values']['index_search']);
+//
+//  $form['submit'] = array (
+//    '#type' => 'submit',
+//    '#value' => t('Create'),
+//    );
+//
+//    return $form;
+//}
+//
+//function person_subform($form, $number) {
+////
+////  $form['nodes'][$number] = array(
+////   '#type' => 'fieldset',
+////   '#title' => t($role_title),
+////   '#tree' => TRUE,
+////   '#collapsible' => TRUE,
+////   '#collapsed' => FALSE,
+////  );
+//
+//  $form['nodes'][$number]['organization'] = array (
+//   '#type'  => 'textfield',
+//   '#title' => t('organization'),
+// //   '#default_value' => $organization,
+//   '#size'  => 60,
+//   '#maxlength' => 60,
+//   );
+//
+//  $form['nodes'][$number]['address'] = array (
+//   '#type'  => 'textfield',
+//   '#title' => t('address'),
+// //   '#default_value' => $address,
+//   '#size'  => 60,
+//   '#maxlength' => 100,
+//   );
+//
+//  $form['nodes'][$number]['city'] = array (
+//   '#type'  => 'textfield',
+//   '#title' => t('city'),
+// //   '#default_value' => $city,
+//   '#size'  => 60,
+//   '#maxlength' => 60,
+//   );
+//
+//  $form['nodes'][$number]['state'] = array(
+//   '#type' => 'select',
+//   '#title' => t('state'),
+// //   '#default_value' => $state,
+//   '#options' => $states,
+//  );
+//
+//  $form['nodes'][$number]['zipcode'] = array (
+//   '#type'  => 'textfield',
+//   '#title' => t('zipcode'),
+// //   '#default_value' => $zipcode,
+//   '#size'  => 60,
+//   '#maxlength' => 60,
+//   );
+//
+//  $form['nodes'][$number]['country'] = array(
+//   '#type' => 'select',
+//   '#title' => t('country'),
+// //   '#default_value' => $country,
+//   '#options' => $country_list,
+//  );
+//
+//  $form['nodes'][$number]['phone'] = array (
+//   '#type'  => 'textfield',
+//   '#title' => t('phone'),
+// //   '#default_value' => $phone,
+//   '#size'  => 60,
+//   '#maxlength' => 60,
+//   );
+//
+//  $form['nodes'][$number]['fax'] = array (
+//   '#type'  => 'textfield',
+//   '#title' => t('fax'),
+// //   '#default_value' => $fax,
+//   '#size'  => 60,
+//   '#maxlength' => 60,
+//   );
+//
+//  $form['nodes'][$number]['role'] = array(
+//   '#type' => 'value',
+//   '#value' => $role_title,
+//  );
+//
+//  $form['nodes'][$number]['email'] = array (
+//   '#type'  => 'textfield',
+//   '#title' => t('email'),
+// //   '#default_value' => $email,
+//   // '#required'  => TRUE,
+//   '#size'  => 60,
+//   '#maxlength' => 60,
+//   );
+//
+//
+//  $form['nodes'][$number]['first_name'] = array (
+//    '#type'  => 'textfield',
+//    '#title' => t('first_name'),
+// //    '#default_value' => $first_name,
+//    '#size'  => 60,
+//    '#maxlength' => 60,
+//  );
+//
+//  $form['nodes'][$number]['last_name'] = array (
+//    '#type'  => 'textfield',
+//    '#title' => t('last_name'),
+// //    '#default_value' => $last_name,
+//    '#size'  => 60,
+//    '#maxlength' => 60,
+//  );
+//
+//}
