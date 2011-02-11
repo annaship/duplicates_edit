@@ -14,17 +14,33 @@ function duplicates_edit_page()
 function duplicates_edit_form($form_state) {
   $form = array();
 
-  $form['nodes'] = array(
+  $form['nodes']['1'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Nodes'),
+    '#title' => t('First Node'),
     '#tree' => TRUE,
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
 
-  $form['nodes']['1'] = array (
+  $form['nodes']['1']['name'] = array (
     '#type'  => 'textfield',
-    '#title' => t('First Node'),
+    '#title' => t('Name'),
+    '#default_value' => 'Nlll',
+    '#size'  => 60,
+    '#maxlength' => 60,
+  );
+
+  $form['nodes']['2'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Second Node'),
+    '#tree' => TRUE,
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['nodes']['2']['name'] = array (
+    '#type'  => 'textfield',
+    '#title' => t('Name'),
     '#default_value' => 'Nlll',
     '#size'  => 60,
     '#maxlength' => 60,
