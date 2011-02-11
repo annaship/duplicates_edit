@@ -1,0 +1,6 @@
+; $Id: duplicates_edit.info, v 1.0 2010-11-18 AM ashipunova Exp $
+name = Edit duplicates
+description = "Edit two duplicates"
+core = 6.x
+package = Duplicates
+

@@ -1,0 +1,25 @@
+<?php
+// $Id: duplicates_edit.module, v 2.0 2010-11-22 ashipunova $
+/*
+ * Edit or remove duplicates
+ * ?q=duplicates_edit
+*/
+
+//TODO: if remove 1 node change all its nids as references onto second one
+
+function duplicates_edit_menu() {
+  dpm('HERE! duplicates_edit_menu');
+  $items = array();
+  $items['duplicates_edit'] = array (
+    'title' => t('Edit duplicates'),
+    'page callback' => 'duplicates_edit_page',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'duplicates_edit.inc',
+    );
+  return $items;
+}
+
+//function duplicates_edit_page() {
+//  return drupal_get_form('duplicates_edit_form');
+//}
