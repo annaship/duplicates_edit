@@ -16,19 +16,17 @@ function duplicates_edit_page()
 function duplicates_edit_form($form_state) {
   $form = array();
 
-  $form['acronym'] = array(
-    '#type'  => 'textfield',
-    '#title' => t('Site name acronym'),
-    // '#required'  => TRUE,
-    '#size'  => 3,
-    '#maxlength' => 3,
-//    '#default_value' => $acronym', $last_settings['last_acronym,
-    // '#description' => t('Site name acronym'),
+  $form['persons']['1'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('First node'),
+    '#tree' => TRUE,
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
   );
 
-  $form['persons'] = array(
+    $form['persons']['2'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Metadata Provider and Publisher'),
+    '#title' => t('Second node'),
     '#tree' => TRUE,
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
@@ -51,16 +49,13 @@ function person_subform($form, $role) {
   $states       = states();
   $country_list = country_list();
 
-
-  $person_role_value = 'Metadata Provider';
-
-  $form['persons'][$role] = array(
-    '#type' => 'fieldset',
-    '#title' => t($role_title),
-    '#tree' => TRUE,
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-  );
+//  $form['persons'][$role] = array(
+//    '#type' => 'fieldset',
+//    '#title' => t($role . ' node'),
+//    '#tree' => TRUE,
+//    '#collapsible' => TRUE,
+//    '#collapsed' => FALSE,
+//  );
 
   $form['persons'][$role]['organization'] = array (
     '#type'  => 'textfield',
