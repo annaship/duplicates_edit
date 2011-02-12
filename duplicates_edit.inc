@@ -16,26 +16,8 @@ function duplicates_edit_page()
 function duplicates_edit_form($form_state) {
   $form = array();
 
-//  $form['persons']['1'] = array(
-//    '#type' => 'fieldset',
-//    '#title' => t('First node'),
-//    '#tree' => TRUE,
-//    '#collapsible' => TRUE,
-//    '#collapsed' => FALSE,
-//  );
-//
-//    $form['persons']['2'] = array(
-//    '#type' => 'fieldset',
-//    '#title' => t('Second node'),
-//    '#tree' => TRUE,
-//    '#collapsible' => TRUE,
-//    '#collapsed' => FALSE,
-//  );
-
   $form = person_subform($form, '1');
   $form = person_subform($form, '2');
-
-  // $form_state['redirect'] = array('page1', 'id=' . $form_state['values']['index_search']);
 
   $form['submit'] = array (
     '#type' => 'submit',
@@ -48,6 +30,9 @@ function duplicates_edit_form($form_state) {
 function person_subform($form, $number) {
   $states       = states();
   $country_list = country_list();
+  $node         = _get_nodes($number);
+  $l            = variable_get('last_name', '');
+
 
   $number == '1' ? $ord_number = 'First' : $ord_number = 'Second';
   $form['persons'][$number] = array(
@@ -58,10 +43,27 @@ function person_subform($form, $number) {
     '#collapsed' => FALSE,
   );
 
+  $form['persons'][$number]['first_name'] = array (
+    '#type'  => 'textfield',
+    '#title' => t('first_name'),
+    '#default_value' => variable_get('first_name,', ''),
+    '#size'  => 60,
+    '#maxlength' => 60,
+   );
+
+  $form['persons'][$number]['last_name'] = array (
+    '#type'  => 'textfield',
+    '#title' => t('last_name'),
+//    '#default_value' => variable_get('last_name,', ''),
+    '#default_value' => $l,
+    '#size'  => 60,
+    '#maxlength' => 60,
+  );
+
   $form['persons'][$number]['organization'] = array (
     '#type'  => 'textfield',
     '#title' => t('organization'),
-//     '#default_value' => $organization,
+    '#default_value' => variable_get('organization,', ''),
     '#size'  => 60,
     '#maxlength' => 60,
     );
@@ -69,7 +71,7 @@ function person_subform($form, $number) {
   $form['persons'][$number]['address'] = array (
     '#type'  => 'textfield',
     '#title' => t('address'),
-//     '#default_value' => $address,
+    '#default_value' => variable_get('address,', ''),
     '#size'  => 60,
     '#maxlength' => 100,
     );
@@ -77,7 +79,7 @@ function person_subform($form, $number) {
   $form['persons'][$number]['city'] = array (
     '#type'  => 'textfield',
     '#title' => t('city'),
-//     '#default_value' => $city,
+    '#default_value' => variable_get('city,', ''),
     '#size'  => 60,
     '#maxlength' => 60,
     );
@@ -85,14 +87,14 @@ function person_subform($form, $number) {
   $form['persons'][$number]['state'] = array(
     '#type' => 'select',
     '#title' => t('state'),
-//     '#default_value' => $state,
+    '#default_value' => variable_get('state,', ''),
     '#options' => $states,
   );
 
   $form['persons'][$number]['zipcode'] = array (
     '#type'  => 'textfield',
     '#title' => t('zipcode'),
-//     '#default_value' => $zipcode,
+    '#default_value' => variable_get('zipcode,', ''),
     '#size'  => 60,
     '#maxlength' => 60,
     );
@@ -100,14 +102,14 @@ function person_subform($form, $number) {
   $form['persons'][$number]['country'] = array(
     '#type' => 'select',
     '#title' => t('country'),
-//     '#default_value' => $country,
+    '#default_value' => variable_get('country,', ''),
     '#options' => $country_list,
   );
 
   $form['persons'][$number]['phone'] = array (
     '#type'  => 'textfield',
     '#title' => t('phone'),
-//     '#default_value' => $phone,
+    '#default_value' => variable_get('phone,', ''),
     '#size'  => 60,
     '#maxlength' => 60,
     );
@@ -115,20 +117,20 @@ function person_subform($form, $number) {
   $form['persons'][$number]['fax'] = array (
     '#type'  => 'textfield',
     '#title' => t('fax'),
-//     '#default_value' => $fax,
+    '#default_value' => variable_get('fax,', ''),
     '#size'  => 60,
     '#maxlength' => 60,
     );
 
-  $form['persons'][$number]['role'] = array(
-    '#type' => 'value',
-    '#value' => $number_title,
-  );
+//  $form['persons'][$number]['role'] = array(
+//    '#type' => 'value',
+//    '#value' => $number_title,
+//  );
 
   $form['persons'][$number]['email'] = array (
     '#type'  => 'textfield',
     '#title' => t('email'),
-//     '#default_value' => $email,
+    '#default_value' => variable_get('email,', ''),
     // '#required'  => TRUE,
     '#size'  => 60,
     '#maxlength' => 60,
@@ -136,21 +138,7 @@ function person_subform($form, $number) {
 
   // Commented fields are here in case we will need them
 
-  // $form['persons'][$number]['first_name'] = array (
-  //   '#type'  => 'textfield',
-  //   '#title' => t('first_name'),
-//   //   '#default_value' => $first_name,
-  //   '#size'  => 60,
-  //   '#maxlength' => 60,
-  //   );
-  //
-  // $form['persons'][$number]['last_name'] = array (
-  //   '#type'  => 'textfield',
-  //   '#title' => t('last_name'),
-//   //   '#default_value' => $last_name,
-  //   '#size'  => 60,
-  //   '#maxlength' => 60,
-  //   );
+
 
   // $form['persons'][$number]['personid'] = array (
   //   '#type'  => 'textfield',
@@ -164,178 +152,26 @@ function person_subform($form, $number) {
 }
 
 
-//
-//function duplicates_edit_form($form_state) {
-//  $form = array();
-//
-////  $form['persons'] = array(
-////    '#type' => 'fieldset',
-////    '#title' => t('Metadata Provider and Publisher'),
-////    '#tree' => TRUE,
-////    '#collapsible' => TRUE,
-////    '#collapsed' => FALSE,
-////  );
-//
-//
-//  $form['nodes']['1'] = array(
-//    '#type' => 'fieldset',
-//    '#title' => t('First Node'),
-//    '#tree' => TRUE,
-//    '#collapsible' => TRUE,
-//    '#collapsed' => FALSE,
-//  );
-//
-////  $form['nodes']['1']['name'] = array (
-////    '#type'  => 'textfield',
-////    '#title' => t('Name'),
-// ////    '#default_value' => 'Nlll',
-////    '#size'  => 60,
-////    '#maxlength' => 60,
-////  );
-////
-//  $form['nodes']['2'] = array(
-//    '#type' => 'fieldset',
-//    '#title' => t('Second Node'),
-//    '#tree' => TRUE,
-//    '#collapsible' => TRUE,
-//    '#collapsed' => FALSE,
-//  );
-//
-////  $form['nodes']['2']['name'] = array (
-////    '#type'  => 'textfield',
-////    '#title' => t('Name'),
-// ////    '#default_value' => 'Nlll',
-////    '#size'  => 60,
-////    '#maxlength' => 60,
-////  );
-//
-//  /*
-//   *   $form['persons'] = array(
-//    '#type' => 'fieldset',
-//    '#title' => t('Metadata Provider and Publisher'),
-//    '#tree' => TRUE,
-//    '#collapsible' => TRUE,
-//    '#collapsed' => FALSE,
-//  );
-//
-//  $form = person_subform($form, 'metadataProvider');
-//  $form = person_subform($form, 'publisher');
-//   */
-//
-//  $form = person_subform($form, '1');
-//  $form = person_subform($form, '2');
-//
-//  // $form_state['redirect'] = array('page1', 'id=' . $form_state['values']['index_search']);
-//
-//  $form['submit'] = array (
-//    '#type' => 'submit',
-//    '#value' => t('Create'),
-//    );
-//
-//    return $form;
-//}
-//
-//function person_subform($form, $number) {
-////
-////  $form['nodes'][$number] = array(
-////   '#type' => 'fieldset',
-////   '#title' => t($number_title),
-////   '#tree' => TRUE,
-////   '#collapsible' => TRUE,
-////   '#collapsed' => FALSE,
-////  );
-//
-//  $form['nodes'][$number]['organization'] = array (
-//   '#type'  => 'textfield',
-//   '#title' => t('organization'),
-// //   '#default_value' => $organization,
-//   '#size'  => 60,
-//   '#maxlength' => 60,
-//   );
-//
-//  $form['nodes'][$number]['address'] = array (
-//   '#type'  => 'textfield',
-//   '#title' => t('address'),
-// //   '#default_value' => $address,
-//   '#size'  => 60,
-//   '#maxlength' => 100,
-//   );
-//
-//  $form['nodes'][$number]['city'] = array (
-//   '#type'  => 'textfield',
-//   '#title' => t('city'),
-// //   '#default_value' => $city,
-//   '#size'  => 60,
-//   '#maxlength' => 60,
-//   );
-//
-//  $form['nodes'][$number]['state'] = array(
-//   '#type' => 'select',
-//   '#title' => t('state'),
-// //   '#default_value' => $state,
-//   '#options' => $states,
-//  );
-//
-//  $form['nodes'][$number]['zipcode'] = array (
-//   '#type'  => 'textfield',
-//   '#title' => t('zipcode'),
-// //   '#default_value' => $zipcode,
-//   '#size'  => 60,
-//   '#maxlength' => 60,
-//   );
-//
-//  $form['nodes'][$number]['country'] = array(
-//   '#type' => 'select',
-//   '#title' => t('country'),
-// //   '#default_value' => $country,
-//   '#options' => $country_list,
-//  );
-//
-//  $form['nodes'][$number]['phone'] = array (
-//   '#type'  => 'textfield',
-//   '#title' => t('phone'),
-// //   '#default_value' => $phone,
-//   '#size'  => 60,
-//   '#maxlength' => 60,
-//   );
-//
-//  $form['nodes'][$number]['fax'] = array (
-//   '#type'  => 'textfield',
-//   '#title' => t('fax'),
-// //   '#default_value' => $fax,
-//   '#size'  => 60,
-//   '#maxlength' => 60,
-//   );
-//
-//  $form['nodes'][$number]['role'] = array(
-//   '#type' => 'value',
-//   '#value' => $number_title,
-//  );
-//
-//  $form['nodes'][$number]['email'] = array (
-//   '#type'  => 'textfield',
-//   '#title' => t('email'),
-// //   '#default_value' => $email,
-//   // '#required'  => TRUE,
-//   '#size'  => 60,
-//   '#maxlength' => 60,
-//   );
-//
-//
-//  $form['nodes'][$number]['first_name'] = array (
-//    '#type'  => 'textfield',
-//    '#title' => t('first_name'),
-// //    '#default_value' => $first_name,
-//    '#size'  => 60,
-//    '#maxlength' => 60,
-//  );
-//
-//  $form['nodes'][$number]['last_name'] = array (
-//    '#type'  => 'textfield',
-//    '#title' => t('last_name'),
-// //    '#default_value' => $last_name,
-//    '#size'  => 60,
-//    '#maxlength' => 60,
-//  );
-//
-//}
+function _get_nodes($number) {
+  $checked_nides = variable_get('checked_nides', '');
+
+  $number == 1 ? $nid = $checked_nides[0] : $nid = $checked_nides[1];
+  $node = node_load($nid);
+
+  variable_set('first_name', $node->field_person_first_name[0]['value']);
+  variable_set('last_name', $node->field_person_last_name[0]['value']);
+  variable_set('organization', $node->field_person_organization[0]['value']);
+  variable_set('title', $node->field_person_title[0]['value']);
+  variable_set('address', $node->field_person_address[0]['value']);
+  variable_set('city', $node->field_person_city[0]['value']);
+  variable_set('state', $node->field_person_state[0]['value']);
+  variable_set('zipcode', $node->field_person_zipcode[0]['value']);
+  variable_set('country', $node->field_person_country[0]['value']);
+  variable_set('phone', $node->field_person_phone[0]['value']);
+  variable_set('fax', $node->field_person_fax[0]['value']);
+  variable_set('email', $node->field_person_email[0]['value']);
+//  variable_set('personid', $node->field_person_personid);
+  variable_set('role', $node->field_person_role[0]['value']);
+
+  return $node;
+}
