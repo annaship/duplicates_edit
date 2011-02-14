@@ -33,7 +33,7 @@ function person_subform($form, $number) {
   $number == '1' ? $ord_number = 'First' : $ord_number = 'Second';
   $form['persons'][$number] = array(
     '#type' => 'fieldset',
-    '#title' => t($ord_number . ' node'),
+//    '#title' => t($ord_number . ' node'),
     '#tree' => TRUE,
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
@@ -41,7 +41,7 @@ function person_subform($form, $number) {
 
   $form['persons'][$number]['first_name'] = array (
     '#type'  => 'textfield',
-    '#title' => t('first_name'),
+//    '#title' => t('first_name'),
     '#default_value' => variable_get('first_name', ''),
     '#size'  => 60,
     '#maxlength' => 60,
@@ -49,7 +49,7 @@ function person_subform($form, $number) {
 
   $form['persons'][$number]['last_name'] = array (
     '#type'  => 'textfield',
-    '#title' => t('last_name'),
+//    '#title' => t('last_name'),
     '#default_value' => variable_get('last_name', ''),
     '#size'  => 60,
     '#maxlength' => 60,
@@ -57,7 +57,7 @@ function person_subform($form, $number) {
 
   $form['persons'][$number]['organization'] = array (
     '#type'  => 'textfield',
-    '#title' => t('organization'),
+//    '#title' => t('organization'),
     '#default_value' => variable_get('organization', ''),
     '#size'  => 60,
     '#maxlength' => 60,
@@ -65,7 +65,7 @@ function person_subform($form, $number) {
 
   $form['persons'][$number]['address'] = array (
     '#type'  => 'textfield',
-    '#title' => t('address'),
+//    '#title' => t('address'),
     '#default_value' => variable_get('address', ''),
     '#size'  => 60,
     '#maxlength' => 100,
@@ -73,7 +73,7 @@ function person_subform($form, $number) {
 
   $form['persons'][$number]['city'] = array (
     '#type'  => 'textfield',
-    '#title' => t('city'),
+//    '#title' => t('city'),
     '#default_value' => variable_get('city', ''),
     '#size'  => 60,
     '#maxlength' => 60,
@@ -81,14 +81,14 @@ function person_subform($form, $number) {
 
   $form['persons'][$number]['state'] = array(
     '#type' => 'select',
-    '#title' => t('state'),
+//    '#title' => t('state'),
     '#default_value' => variable_get('state', ''),
     '#options' => $states,
   );
 
   $form['persons'][$number]['zipcode'] = array (
     '#type'  => 'textfield',
-    '#title' => t('zipcode'),
+//    '#title' => t('zipcode'),
     '#default_value' => variable_get('zipcode', ''),
     '#size'  => 60,
     '#maxlength' => 60,
@@ -96,14 +96,14 @@ function person_subform($form, $number) {
 
   $form['persons'][$number]['country'] = array(
     '#type' => 'select',
-    '#title' => t('country'),
+//    '#title' => t('country'),
     '#default_value' => variable_get('country', ''),
     '#options' => $country_list,
   );
 
   $form['persons'][$number]['phone'] = array (
     '#type'  => 'textfield',
-    '#title' => t('phone'),
+//    '#title' => t('phone'),
     '#default_value' => variable_get('phone', ''),
     '#size'  => 60,
     '#maxlength' => 60,
@@ -111,7 +111,7 @@ function person_subform($form, $number) {
 
   $form['persons'][$number]['fax'] = array (
     '#type'  => 'textfield',
-    '#title' => t('fax'),
+//    '#title' => t('fax'),
     '#default_value' => variable_get('fax', ''),
     '#size'  => 60,
     '#maxlength' => 60,
@@ -124,7 +124,7 @@ function person_subform($form, $number) {
 
   $form['persons'][$number]['email'] = array (
     '#type'  => 'textfield',
-    '#title' => t('email'),
+//    '#title' => t('email'),
     '#default_value' => variable_get('email', ''),
     // '#required'  => TRUE,
     '#size'  => 60,
@@ -163,8 +163,10 @@ function duplicates_edit_theme() {
 
 function theme_duplicates_edit_form($form) {
 	$rows = array();
+  $i = 0;
 //  
   $person_fields = _person_fields();
+
 //  array(
 //    'first_name',
 //    'last_name',
@@ -184,12 +186,16 @@ function theme_duplicates_edit_form($form) {
   }
 
 	foreach ($side_by_side_form_array as $value) {
+//    dpm($value);
+    $title = $person_fields[$i];
 		$row = array();
     $data1 = drupal_render($value[0]);
     $data2 = drupal_render($value[1]);
-    $rows[] = array($data1, $data2);
+    $rows[] = array($title, $data1, $data2);
+    $i++;
 	}
 	$header = array();
+  $header[] = '';
 //	$header[] = array('data' => t('First person'), 'class' => 'checkbox');
 	$header[] = t('First person');
 	$header[] = t('Second Person');
