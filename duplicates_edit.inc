@@ -197,6 +197,7 @@ function theme_duplicates_edit_form($form) {
 
 
 function duplicates_edit_form_submit($form, &$form_state) {
+  $good_node_nid = $bad_node_nid = 0;
   foreach ($form_state['values'] as $key => $value) {
 //TODO: should work, if only one is checked,
 // handle another situation (1,1; 0,0)
@@ -235,21 +236,21 @@ function duplicates_edit_form_submit($form, &$form_state) {
 //  );
 
   foreach ($ref_fields as $tab_name => $field_name) {
-//    dpm('$tab_name = ' . $tab_name . ', $field_name = ' . $field_name . ', $good_node_nid = ' . $good_node_nid . ', $field_name = ' . $field_name . ', $bad_node_nid = ' . $bad_node_nid);
-    $sql = "SELECT nid FROM {%s} WHERE %s = %d OR %s = %d;";
+    dpm('$tab_name = ' . $tab_name . ', $field_name = ' . $field_name . ', $good_node_nid = ' . $good_node_nid . ', $field_name = ' . $field_name . ', $bad_node_nid = ' . $bad_node_nid);
+//    $sql = "SELECT nid FROM {%s} WHERE %s = %d OR %s = %d;";
 //    $db_result = db_query($sql, $tab_name, $field_name, $good_node_nid);
-    $db_result = db_query($sql, $tab_name, $field_name, $good_node_nid, $field_name, $bad_node_nid);
-//  $sql = "UPDATE {%s} SET %s = %d WHERE %s = %d";
+//    $sql = "UPDATE {%s} SET %s = %d WHERE %s = %d";
+//    $db_result = db_query($sql, $tab_name, $field_name, $good_node_nid, $field_name, $bad_node_nid);
 //  TODO: delete_node with $bad_node_nid
 //$tab_name = content_field_dataset_site_ref, $field_name = field_dataset_site_ref_nid, $good_node_nid = 45697,
 //$field_name = field_dataset_site_ref_nid, $bad_node_nid = 45620
 
 //  $db_result = db_query($sql, $tab_name, $field_name, $good_node_nid, $field_name, $bad_node_nid);
-    while ($res = db_result($db_result)) {
-      dpm('res = ');
-      dpm($res);
-  //    $nids[] = $nid;
-    }
+//    while ($res = db_result($db_result)) {
+//      dpm('res = ');
+//      dpm($res);
+//  //    $nids[] = $nid;
+//    }
   }
 }
 
