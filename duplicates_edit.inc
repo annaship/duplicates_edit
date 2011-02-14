@@ -4,13 +4,7 @@ require_once('duplicates_edit_arrays.inc');
 
 function duplicates_edit_page()
 {
-//  $checked_nides = $checked_nides', ',
-//  dpm('HERE! duplicates_edit_page');
-//
-//  dpr($checked_nides);
-//  dpm($checked_nides);
   return drupal_get_form('duplicates_edit_form');
-
 }
 
 function duplicates_edit_form($form_state) {
@@ -46,7 +40,7 @@ function person_subform($form, $number) {
   $form['persons'][$number]['first_name'] = array (
     '#type'  => 'textfield',
     '#title' => t('first_name'),
-    '#default_value' => variable_get('first_name,', ''),
+    '#default_value' => variable_get('first_name', ''),
     '#size'  => 60,
     '#maxlength' => 60,
    );
@@ -54,8 +48,8 @@ function person_subform($form, $number) {
   $form['persons'][$number]['last_name'] = array (
     '#type'  => 'textfield',
     '#title' => t('last_name'),
-//    '#default_value' => variable_get('last_name,', ''),
-    '#default_value' => $l,
+    '#default_value' => variable_get('last_name', ''),
+//    '#default_value' => $l,
     '#size'  => 60,
     '#maxlength' => 60,
   );
@@ -63,7 +57,7 @@ function person_subform($form, $number) {
   $form['persons'][$number]['organization'] = array (
     '#type'  => 'textfield',
     '#title' => t('organization'),
-    '#default_value' => variable_get('organization,', ''),
+    '#default_value' => variable_get('organization', ''),
     '#size'  => 60,
     '#maxlength' => 60,
     );
@@ -71,7 +65,7 @@ function person_subform($form, $number) {
   $form['persons'][$number]['address'] = array (
     '#type'  => 'textfield',
     '#title' => t('address'),
-    '#default_value' => variable_get('address,', ''),
+    '#default_value' => variable_get('address', ''),
     '#size'  => 60,
     '#maxlength' => 100,
     );
@@ -79,7 +73,7 @@ function person_subform($form, $number) {
   $form['persons'][$number]['city'] = array (
     '#type'  => 'textfield',
     '#title' => t('city'),
-    '#default_value' => variable_get('city,', ''),
+    '#default_value' => variable_get('city', ''),
     '#size'  => 60,
     '#maxlength' => 60,
     );
@@ -87,14 +81,14 @@ function person_subform($form, $number) {
   $form['persons'][$number]['state'] = array(
     '#type' => 'select',
     '#title' => t('state'),
-    '#default_value' => variable_get('state,', ''),
+    '#default_value' => variable_get('state', ''),
     '#options' => $states,
   );
 
   $form['persons'][$number]['zipcode'] = array (
     '#type'  => 'textfield',
     '#title' => t('zipcode'),
-    '#default_value' => variable_get('zipcode,', ''),
+    '#default_value' => variable_get('zipcode', ''),
     '#size'  => 60,
     '#maxlength' => 60,
     );
@@ -102,14 +96,14 @@ function person_subform($form, $number) {
   $form['persons'][$number]['country'] = array(
     '#type' => 'select',
     '#title' => t('country'),
-    '#default_value' => variable_get('country,', ''),
+    '#default_value' => variable_get('country', ''),
     '#options' => $country_list,
   );
 
   $form['persons'][$number]['phone'] = array (
     '#type'  => 'textfield',
     '#title' => t('phone'),
-    '#default_value' => variable_get('phone,', ''),
+    '#default_value' => variable_get('phone', ''),
     '#size'  => 60,
     '#maxlength' => 60,
     );
@@ -117,7 +111,7 @@ function person_subform($form, $number) {
   $form['persons'][$number]['fax'] = array (
     '#type'  => 'textfield',
     '#title' => t('fax'),
-    '#default_value' => variable_get('fax,', ''),
+    '#default_value' => variable_get('fax', ''),
     '#size'  => 60,
     '#maxlength' => 60,
     );
@@ -130,7 +124,7 @@ function person_subform($form, $number) {
   $form['persons'][$number]['email'] = array (
     '#type'  => 'textfield',
     '#title' => t('email'),
-    '#default_value' => variable_get('email,', ''),
+    '#default_value' => variable_get('email', ''),
     // '#required'  => TRUE,
     '#size'  => 60,
     '#maxlength' => 60,
@@ -169,7 +163,7 @@ function _get_nodes($number) {
   variable_set('country', $node->field_person_country[0]['value']);
   variable_set('phone', $node->field_person_phone[0]['value']);
   variable_set('fax', $node->field_person_fax[0]['value']);
-  variable_set('email', $node->field_person_email[0]['value']);
+  variable_set('email', $node->field_person_email[0]['email']);
 //  variable_set('personid', $node->field_person_personid);
   variable_set('role', $node->field_person_role[0]['value']);
 
