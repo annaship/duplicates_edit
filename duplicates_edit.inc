@@ -13,13 +13,22 @@ function duplicates_edit_form($form_state) {
   $form = person_subform($form, '1');
   $form = person_subform($form, '2');
 
-//  $transpose_form = _transpose_form($form);
-//  variable_set('transpose_form', $transpose_form);
+	$form['submit'] = array(
+		'#type' => 'submit',
+		'#value' => t('Submit'),
+	);
 
-  $form['submit'] = array (
-    '#type' => 'submit',
-    '#value' => t('Create'),
-    );
+	$form['cancel'] = array(
+		'#type' => 'markup',
+		'#value' => l(t('Cancel'), 'duplicates_check'),
+	);
+
+//	$form['#redirect'] = ‘featured_product_mgmt’;
+
+//  $form['submit'] = array (
+//    '#type' => 'submit',
+//    '#value' => t('Submit'),
+//    );
 
   return $form;
 }
@@ -31,6 +40,7 @@ function person_subform($form, $number) {
 
 
   $number == '1' ? $ord_number = 'First' : $ord_number = 'Second';
+
   $form['persons'][$number] = array(
     '#type' => 'fieldset',
 //    '#title' => t($ord_number . ' node'),
@@ -39,13 +49,18 @@ function person_subform($form, $number) {
     '#collapsed' => FALSE,
   );
 
+  $form['persons'][$number]['nid']  = array(
+    '#type' => 'hidden',
+    '#value' => variable_get('nid', ''),
+  );
+
   $form['persons'][$number]['first_name'] = array (
     '#type'  => 'textfield',
 //    '#title' => t('first_name'),
     '#default_value' => variable_get('first_name', ''),
     '#size'  => 40,
     '#maxlength' => 60,
-   );
+  );
 
   $form['persons'][$number]['last_name'] = array (
     '#type'  => 'textfield',
@@ -153,8 +168,6 @@ function person_subform($form, $number) {
   return $form;
 }
 
-//TODO "submit"
-
 function duplicates_edit_theme() {
 	return array(
 		'duplicates_edit_form' => array('arguments' => array('form' => NULL),),
@@ -173,9 +186,47 @@ function theme_duplicates_edit_form($form) {
 	}
   $header = array('', t('First person'), t('Second Person'));
 
-	$output = theme('table', $header, $rows);
+//	$output = theme('table', $header, $rows);
+  
+//  $output .= drupal_render($form['submit']);
+//  $output .= drupal_render($form['cancel']);
+	$output .= drupal_render($form);
+
 	return $output;
 }
+
+
+function duplicates_edit_form_submit($form, &$form_state) {
+  foreach ($form_state['values'] as $key => $value) {
+
+    if (is_array($value)) {
+      dpm('$value = ');
+      dpm($value);
+      dpm('$value[keep_this_node] = ');
+      dpm($value['keep_this_node']);
+    }
+//    dpr($value['keep_this_node']);
+//    print_r($value['keep_this_node']);
+//    drupal_set_message($value['keep_this_node']);
+
+//  $e = preg_match("/node_(\d+)/", $key, $matches);
+//  $nid = $matches[1];
+//  if (preg_match("/node/", $key) AND $value == 1) {
+//    $checked[] = $nid;
+//  }
+}
+//  dpm($checked);
+//  variable_set('checked_nides', $checked);
+//  $current_destination = drupal_get_destination();
+////  dpm('$checked.size = ' . count($checked));
+//  if (count($checked) != 2) {
+//    drupal_set_message('Please check two nodes');
+//  }
+//  else {
+//    drupal_goto('duplicates_edit', $current_destination);
+//  }
+}
+
 
 function _get_nodes($number) {
   $checked_nides = variable_get('checked_nides', '');
@@ -189,6 +240,7 @@ function _get_nodes($number) {
 
 function _set_default_values($node) {
   $person_field_names = _person_field_names();
+  variable_set('nid', $node->nid);
   foreach($person_field_names as $var_name => $node_field_name) {
     $node_value = $node->$node_field_name;
     $value = $node_value[0]['value'];
@@ -202,6 +254,7 @@ function _del_variables() {
   foreach(array_keys($person_field_names) as $var_name) {
     variable_del($var_name);
   }
+  variable_del('nid');
   variable_del('email');
 }
 
