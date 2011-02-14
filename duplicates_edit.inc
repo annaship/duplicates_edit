@@ -162,43 +162,16 @@ function duplicates_edit_theme() {
 }
 
 function theme_duplicates_edit_form($form) {
+	$header = array();
 	$rows = array();
-  $i = 0;
-//  
-  $person_fields = _person_fields();
-
-//  array(
-//    'first_name',
-//    'last_name',
-//    'organization',
-//    'address',
-//    'city',
-//    'state',
-//    'zipcode',
-//    'country',
-//    'phone',
-//    'fax',
-//    'email',
-//  );
-
-
-  foreach ($person_fields as $field_name => $field_title) {
-    $side_by_side_form_array[] = array($field_title, $form['persons']['1'][$field_name], $form['persons']['2'][$field_name]);
-  }
+  $side_by_side_form_array = _transpose_form_array($form);
 
 	foreach ($side_by_side_form_array as $value) {
-//    dpm($value);
-    $title = $person_fields[$i];
-		$row = array();
     $data1 = drupal_render($value[1]);
     $data2 = drupal_render($value[2]);
     $rows[] = array($value[0], $data1, $data2);
 	}
-	$header = array();
-  $header[] = '';
-//	$header[] = array('data' => t('First person'), 'class' => 'checkbox');
-	$header[] = t('First person');
-	$header[] = t('Second Person');
+  $header = array('', t('First person'), t('Second Person'));
 
 	$output = theme('table', $header, $rows);
 	return $output;
@@ -209,88 +182,35 @@ function _get_nodes($number) {
 
   $number == 1 ? $nid = $checked_nides[0] : $nid = $checked_nides[1];
   $node = node_load($nid);
-
-  variable_set('first_name', $node->field_person_first_name[0]['value']);
-  variable_set('last_name', $node->field_person_last_name[0]['value']);
-  variable_set('organization', $node->field_person_organization[0]['value']);
-  variable_set('title', $node->field_person_title[0]['value']);
-  variable_set('address', $node->field_person_address[0]['value']);
-  variable_set('city', $node->field_person_city[0]['value']);
-  variable_set('state', $node->field_person_state[0]['value']);
-  variable_set('zipcode', $node->field_person_zipcode[0]['value']);
-  variable_set('country', $node->field_person_country[0]['value']);
-  variable_set('phone', $node->field_person_phone[0]['value']);
-  variable_set('fax', $node->field_person_fax[0]['value']);
-  variable_set('email', $node->field_person_email[0]['email']);
-//  variable_set('personid', $node->field_person_personid);
-  variable_set('role', $node->field_person_role[0]['value']);
-
+  _set_default_values($node);
+//  $person_field_names = _person_field_names();
+//  foreach($person_field_names as $var_name => $node_field_name) {
+//    $node_value = $node->$node_field_name;
+//    $value = $node_value[0]['value'];
+//    variable_set($var_name, $value);
+//  }
+//  variable_set('email', $node->field_person_email[0]['email']);
   return $node;
 }
 
-function _transpose_form($form) {
-  $person_fields = _person_fields();
-//  array(
-//    'first_name',
-//    'last_name',
-//    'organization',
-//    'address',
-//    'city',
-//    'state',
-//    'zipcode',
-//    'country',
-//    'phone',
-//    'fax',
-//    'email',
-//  );
-
-  foreach ($person_fields as $field_name) {
-    $side_by_side_form_array[] = array($form['persons']['1'][$field_name], $form['persons']['2'][$field_name]);
+function _set_default_values($node) {
+  $person_field_names = _person_field_names();
+  foreach($person_field_names as $var_name => $node_field_name) {
+    $node_value = $node->$node_field_name;
+    $value = $node_value[0]['value'];
+    variable_set($var_name, $value);
   }
-//  dpm($side_by_side_form_array);
+  variable_set('email', $node->field_person_email[0]['email']);
+}
+
+function _transpose_form_array($form) {
+  $person_fields = _person_fields();
+
+  foreach ($person_fields as $field_name => $field_title) {
+    $side_by_side_form_array[] = array($field_title, $form['persons']['1'][$field_name], $form['persons']['2'][$field_name]);
+  }
+
   return $side_by_side_form_array;
 }
 
-/*
- <?php
-function product_theme() {
-	return array(
-		'featured_product_form' => array('arguments' => array('form' => NULL),),
-	);
-}
-?>
-Step 5:- Then finally define your theme function which actually format your form layout in list using the $form array. Using “foreach” loop we navigate through each item of $form array and create $rows array which we pass to “theme_table()” function later. Create the header of your table and call “table_theme()” function with $header and $rows parameters. Call the “drupal_render()” function for render the submit and cancel buttons.
 
-<?php
-function theme_featured_product_form($form) {
-	$rows = array();
-	foreach (element_children($form) as $key) {
-		$row = array();
-		if (isset($form[$key]['name'])) {
-
-			$status = drupal_render($form['featured'][$key]);
-			$row[] = array('data' => $status, 'class' => 'checkbox');
-
-			$row[] = ''. drupal_render($form[$key]['name']) .'';
-			$row[] = array('data' => drupal_render($form[$key]['category']));
-			$row[] = array('data' => drupal_render($form[$key]['discount']));
-			$row[] = array('data' => drupal_render($form[$key]['createdon']));
-
-			$rows[] = $row;
-		}
-	}
-
-	// Individual table headers.
-	$header = array();
-	$header[] = array('data' => t('Featured'), 'class' => 'checkbox');
-	$header[] = t('Name');
-	$header[] = t('Category');
-	$header[] = t('Discount');
-	$header[] = t('Created on');
-
-	$output = theme('table', $header, $rows);
-	$output .= drupal_render($form);
-	return $output;
-}
-?>
- */

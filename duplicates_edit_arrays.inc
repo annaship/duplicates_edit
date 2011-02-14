@@ -329,3 +329,23 @@ function _person_fields() {
   );
   return $person_fields;
 }
+
+
+function _person_field_names() {
+  $person_field_names = array(
+    'first_name'   => 'field_person_first_name',
+    'last_name'    => 'field_person_last_name',
+    'organization' => 'field_person_organization',
+    'title'        => 'field_person_title',
+    'address'      => 'field_person_address',
+    'city'         => 'field_person_city',
+    'state'        => 'field_person_state',
+    'zipcode'      => 'field_person_zipcode',
+    'country'      => 'field_person_country',
+    'phone'        => 'field_person_phone',
+    'fax'          => 'field_person_fax',
+  //  'personid'     => 'field_person_personid',
+    'role'         => 'field_person_role',
+  );
+  return $person_field_names;
+}
