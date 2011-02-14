@@ -175,3 +175,47 @@ function _get_nodes($number) {
 
   return $node;
 }
+
+/*
+ <?php
+function product_theme() {
+	return array(
+		‘featured_product_form’ => array(‘arguments’ => array(’form’ => NULL),),
+	);
+}
+?>
+Step 5:- Then finally define your theme function which actually format your form layout in list using the $form array. Using “foreach” loop we navigate through each item of $form array and create $rows array which we pass to “theme_table()” function later. Create the header of your table and call “table_theme()” function with $header and $rows parameters. Call the “drupal_render()” function for render the submit and cancel buttons.
+
+<?php
+function theme_featured_product_form($form) {
+	$rows = array();
+	foreach (element_children($form) as $key) {
+		$row = array();
+		if (isset($form[$key]['name'])) {
+
+			$status = drupal_render($form['featured'][$key]);
+			$row[] = array(’data’ => $status, ‘class’ => ‘checkbox’);
+
+			$row[] = ‘‘. drupal_render($form[$key]['name']) .’‘;
+			$row[] = array(’data’ => drupal_render($form[$key]['category']));
+			$row[] = array(’data’ => drupal_render($form[$key]['discount']));
+			$row[] = array(’data’ => drupal_render($form[$key]['createdon']));
+
+			$rows[] = $row;
+		}
+	}
+
+	// Individual table headers.
+	$header = array();
+	$header[] = array(’data’ => t(’Featured’), ‘class’ => ‘checkbox’);
+	$header[] = t(’Name’);
+	$header[] = t(’Category’);
+	$header[] = t(’Discount’);
+	$header[] = t(’Created on’);
+
+	$output = theme(’table’, $header, $rows);
+	$output .= drupal_render($form);
+	return $output;
+}
+?>
+ */
