@@ -182,14 +182,8 @@ function _get_nodes($number) {
 
   $number == 1 ? $nid = $checked_nides[0] : $nid = $checked_nides[1];
   $node = node_load($nid);
+  _del_variables();
   _set_default_values($node);
-//  $person_field_names = _person_field_names();
-//  foreach($person_field_names as $var_name => $node_field_name) {
-//    $node_value = $node->$node_field_name;
-//    $value = $node_value[0]['value'];
-//    variable_set($var_name, $value);
-//  }
-//  variable_set('email', $node->field_person_email[0]['email']);
   return $node;
 }
 
@@ -201,6 +195,14 @@ function _set_default_values($node) {
     variable_set($var_name, $value);
   }
   variable_set('email', $node->field_person_email[0]['email']);
+}
+
+function _del_variables() {
+  $person_field_names = _person_field_names();
+  foreach(array_keys($person_field_names) as $var_name) {
+    variable_del($var_name);
+  }
+  variable_del('email');
 }
 
 function _transpose_form_array($form) {
