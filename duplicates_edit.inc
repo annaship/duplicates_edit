@@ -13,6 +13,9 @@ function duplicates_edit_form($form_state) {
   $form = person_subform($form, '1');
   $form = person_subform($form, '2');
 
+  $transpose_form = _transpose_form($form);
+
+
   $form['submit'] = array (
     '#type' => 'submit',
     '#value' => t('Create'),
@@ -25,7 +28,6 @@ function person_subform($form, $number) {
   $states       = states();
   $country_list = country_list();
   $node         = _get_nodes($number);
-  $l            = variable_get('last_name', '');
 
 
   $number == '1' ? $ord_number = 'First' : $ord_number = 'Second';
@@ -49,7 +51,6 @@ function person_subform($form, $number) {
     '#type'  => 'textfield',
     '#title' => t('last_name'),
     '#default_value' => variable_get('last_name', ''),
-//    '#default_value' => $l,
     '#size'  => 60,
     '#maxlength' => 60,
   );
@@ -145,6 +146,55 @@ function person_subform($form, $number) {
   return $form;
 }
 
+//TODO "submit"
+
+function duplicates_edit_theme() {
+	return array(
+		'duplicates_edit_form' => array('arguments' => array('form' => NULL),),
+	);
+}
+
+function theme_duplicates_edit_form($form) {
+	$rows = array();
+//      dpm($form['persons']['1']);
+//      dpm($form['persons']['2']);
+  
+	foreach (element_children($form['persons']) as $key) {
+		$row = array();
+		if (isset($form['persons'][$key])) {
+      foreach ($form['persons'][$key] as $field_value) {
+        $new_array[] = $field_value;
+      }
+      $new_arrays[] = $new_array;
+//  dpm($form['persons'][$key]['first_name']);
+//      dpm($form['persons'][$key]);
+//			$data = drupal_render($form['persons'][$key]);
+//			$row[] = array('data' => $data);
+//      dpm($row);
+//
+//			$row[] = drupal_render($form['persons']['1'])  drupal_render($form['persons']['2']);
+//			$row[] = array('data' => drupal_render($form['persons'][$key]['first_name']));
+//			$row[] = array('data' => drupal_render($form[$key]['discount']));
+//			$row[] = array('data' => drupal_render($form[$key]['createdon']));
+//
+		}
+	}
+  $rows[] = $row;
+//  dpm('$rows = ');
+//  dpm($rows);
+
+	// Individual table headers.
+	$header = array();
+	$header[] = array('data' => t('Featured'), 'class' => 'checkbox');
+	$header[] = t('Name');
+	$header[] = t('Category');
+	$header[] = t('Discount');
+	$header[] = t('Created on');
+
+	$output = theme('table', $header, $rows);
+	$output .= drupal_render($form);
+	return $output;
+}
 
 function _get_nodes($number) {
   $checked_nides = variable_get('checked_nides', '');
@@ -170,11 +220,52 @@ function _get_nodes($number) {
   return $node;
 }
 
+function _transpose_form($form) {
+//  dpm('HERE!');
+//      dpm($form['persons']['1']);
+//      dpm($form['persons']['2']);
+
+
+  $person_fields = array(
+    'first_name',
+    'last_name',
+    'organization',
+    'address',
+    'city',
+    'state',
+    'zipcode',
+    'country',
+    'phone',
+    'fax',
+    'email',
+  );
+
+//	foreach (element_children($form['persons']) as $key) {
+  foreach ($person_fields as $field_name) {
+//  dpm($form['persons']['1'][$field_name]);
+    $a[] = array($form['persons']['1'][$field_name], $form['persons']['2'][$field_name]);
+  }
+  dpm($a);
+//  dpm($form['persons']['1'][$field_name]);
+
+
+//    if (isset($form['persons'][$key])) {
+//      foreach ($form['persons'][$key] as $field_value) {
+//        $new_array[] = $field_value;
+//        dpm($new_array);
+//      }
+////      $new_arrays[] = $new_array;
+////      dpm($new_arrays);
+//    }
+//  }
+
+}
+
 /*
  <?php
 function product_theme() {
 	return array(
-		‘featured_product_form’ => array(‘arguments’ => array(’form’ => NULL),),
+		'featured_product_form' => array('arguments' => array('form' => NULL),),
 	);
 }
 ?>
@@ -188,12 +279,12 @@ function theme_featured_product_form($form) {
 		if (isset($form[$key]['name'])) {
 
 			$status = drupal_render($form['featured'][$key]);
-			$row[] = array(’data’ => $status, ‘class’ => ‘checkbox’);
+			$row[] = array('data' => $status, 'class' => 'checkbox');
 
-			$row[] = ‘‘. drupal_render($form[$key]['name']) .’‘;
-			$row[] = array(’data’ => drupal_render($form[$key]['category']));
-			$row[] = array(’data’ => drupal_render($form[$key]['discount']));
-			$row[] = array(’data’ => drupal_render($form[$key]['createdon']));
+			$row[] = ''. drupal_render($form[$key]['name']) .'';
+			$row[] = array('data' => drupal_render($form[$key]['category']));
+			$row[] = array('data' => drupal_render($form[$key]['discount']));
+			$row[] = array('data' => drupal_render($form[$key]['createdon']));
 
 			$rows[] = $row;
 		}
@@ -201,13 +292,13 @@ function theme_featured_product_form($form) {
 
 	// Individual table headers.
 	$header = array();
-	$header[] = array(’data’ => t(’Featured’), ‘class’ => ‘checkbox’);
-	$header[] = t(’Name’);
-	$header[] = t(’Category’);
-	$header[] = t(’Discount’);
-	$header[] = t(’Created on’);
+	$header[] = array('data' => t('Featured'), 'class' => 'checkbox');
+	$header[] = t('Name');
+	$header[] = t('Category');
+	$header[] = t('Discount');
+	$header[] = t('Created on');
 
-	$output = theme(’table’, $header, $rows);
+	$output = theme('table', $header, $rows);
 	$output .= drupal_render($form);
 	return $output;
 }
