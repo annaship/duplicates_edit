@@ -314,18 +314,18 @@ function country_list() {
 
 function _person_fields() {
   $person_fields = array(
-    'first_name',
-    'last_name',
-    'organization',
-    'address',
-    'city',
-    'state',
-    'zipcode',
-    'country',
-    'phone',
-    'fax',
-    'email',
-    'keep_this_node',
+    'first_name'     => 'First Name',
+    'last_name'      => 'Last Name',
+    'organization'   => 'Organization',
+    'address'        => 'Address',
+    'city'           => 'City',
+    'state'          => 'State',
+    'zipcode'        => 'Zipcode',
+    'country'        => 'Country',
+    'phone'          => 'Phone',
+    'fax'            => 'Fax',
+    'email'          => 'Email',
+    'keep_this_node' => 'Keep This Node',
   );
   return $person_fields;
 }

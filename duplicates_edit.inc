@@ -43,7 +43,7 @@ function person_subform($form, $number) {
     '#type'  => 'textfield',
 //    '#title' => t('first_name'),
     '#default_value' => variable_get('first_name', ''),
-    '#size'  => 60,
+    '#size'  => 40,
     '#maxlength' => 60,
    );
 
@@ -51,7 +51,7 @@ function person_subform($form, $number) {
     '#type'  => 'textfield',
 //    '#title' => t('last_name'),
     '#default_value' => variable_get('last_name', ''),
-    '#size'  => 60,
+    '#size'  => 40,
     '#maxlength' => 60,
   );
 
@@ -59,7 +59,7 @@ function person_subform($form, $number) {
     '#type'  => 'textfield',
 //    '#title' => t('organization'),
     '#default_value' => variable_get('organization', ''),
-    '#size'  => 60,
+    '#size'  => 40,
     '#maxlength' => 60,
     );
 
@@ -67,7 +67,7 @@ function person_subform($form, $number) {
     '#type'  => 'textfield',
 //    '#title' => t('address'),
     '#default_value' => variable_get('address', ''),
-    '#size'  => 60,
+    '#size'  => 40,
     '#maxlength' => 100,
     );
 
@@ -75,7 +75,7 @@ function person_subform($form, $number) {
     '#type'  => 'textfield',
 //    '#title' => t('city'),
     '#default_value' => variable_get('city', ''),
-    '#size'  => 60,
+    '#size'  => 40,
     '#maxlength' => 60,
     );
 
@@ -90,7 +90,7 @@ function person_subform($form, $number) {
     '#type'  => 'textfield',
 //    '#title' => t('zipcode'),
     '#default_value' => variable_get('zipcode', ''),
-    '#size'  => 60,
+    '#size'  => 40,
     '#maxlength' => 60,
     );
 
@@ -105,7 +105,7 @@ function person_subform($form, $number) {
     '#type'  => 'textfield',
 //    '#title' => t('phone'),
     '#default_value' => variable_get('phone', ''),
-    '#size'  => 60,
+    '#size'  => 40,
     '#maxlength' => 60,
     );
 
@@ -113,7 +113,7 @@ function person_subform($form, $number) {
     '#type'  => 'textfield',
 //    '#title' => t('fax'),
     '#default_value' => variable_get('fax', ''),
-    '#size'  => 60,
+    '#size'  => 40,
     '#maxlength' => 60,
     );
 
@@ -127,13 +127,13 @@ function person_subform($form, $number) {
 //    '#title' => t('email'),
     '#default_value' => variable_get('email', ''),
     // '#required'  => TRUE,
-    '#size'  => 60,
+    '#size'  => 40,
     '#maxlength' => 60,
   );
 
   $form['persons'][$number]['keep_this_node'] = array (
       '#type' => 'checkbox',
-      '#title' => t('keep_this_node'),
+//      '#title' => t('keep_this_node'),
       '#size' => 4,
       '#default_value' => 1,
   );
@@ -146,7 +146,7 @@ function person_subform($form, $number) {
   //   '#type'  => 'textfield',
   //   '#title' => t('personid'),
 //   //   '#default_value' => $personid,
-  //   '#size'  => 60,
+  //   '#size'  => 40,
   //   '#maxlength' => 60,
   //   );
 
@@ -181,18 +181,18 @@ function theme_duplicates_edit_form($form) {
 //    'email',
 //  );
 
-  foreach ($person_fields as $field_name) {
-    $side_by_side_form_array[] = array($form['persons']['1'][$field_name], $form['persons']['2'][$field_name]);
+
+  foreach ($person_fields as $field_name => $field_title) {
+    $side_by_side_form_array[] = array($field_title, $form['persons']['1'][$field_name], $form['persons']['2'][$field_name]);
   }
 
 	foreach ($side_by_side_form_array as $value) {
 //    dpm($value);
     $title = $person_fields[$i];
 		$row = array();
-    $data1 = drupal_render($value[0]);
-    $data2 = drupal_render($value[1]);
-    $rows[] = array($title, $data1, $data2);
-    $i++;
+    $data1 = drupal_render($value[1]);
+    $data2 = drupal_render($value[2]);
+    $rows[] = array($value[0], $data1, $data2);
 	}
 	$header = array();
   $header[] = '';
