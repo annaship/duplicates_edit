@@ -349,3 +349,20 @@ function _person_field_names() {
   );
   return $person_field_names;
 }
+
+function _ref_fields() {
+  $ref_fields = array (
+    'content_field_datafile_site_ref'       => 'field_datafile_site_ref_nid',
+    'content_field_datafile_variable_ref'   => 'field_datafile_variable_ref_nid',
+    'content_field_dataset_biblio_ref'      => 'field_dataset_biblio_ref_nid',
+    'content_field_dataset_contact_ref'     => 'field_dataset_contact_ref_nid',
+    'content_field_dataset_datafile_ref'    => 'field_dataset_datafile_ref_nid',
+    'content_field_dataset_datamanager_ref' => 'field_dataset_datamanager_ref_nid',
+    'content_field_dataset_ext_assoc_ref'   => 'field_dataset_ext_assoc_ref_nid',
+    'content_field_dataset_fieldcrew_ref'   => 'field_dataset_fieldcrew_ref_nid',
+    'content_field_dataset_labcrew_ref'     => 'field_dataset_labcrew_ref_nid',
+    'content_field_dataset_owner_ref'       => 'field_dataset_owner_ref_nid',
+    'content_field_dataset_site_ref'        => 'field_dataset_site_ref_nid',
+  );
+  return $ref_fields;
+}
