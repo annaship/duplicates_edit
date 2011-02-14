@@ -13,8 +13,8 @@ function duplicates_edit_form($form_state) {
   $form = person_subform($form, '1');
   $form = person_subform($form, '2');
 
-  $transpose_form = _transpose_form($form);
-
+//  $transpose_form = _transpose_form($form);
+//  variable_set('transpose_form', $transpose_form);
 
   $form['submit'] = array (
     '#type' => 'submit',
@@ -156,43 +156,65 @@ function duplicates_edit_theme() {
 
 function theme_duplicates_edit_form($form) {
 	$rows = array();
+//  _person_fields();
+  $person_fields = array(
+    'first_name',
+    'last_name',
+    'organization',
+    'address',
+    'city',
+    'state',
+    'zipcode',
+    'country',
+    'phone',
+    'fax',
+    'email',
+  );
+
+  foreach ($person_fields as $field_name) {
+    $side_by_side_form_array[] = array($form['persons']['1'][$field_name], $form['persons']['2'][$field_name]);
+  }
+
+  dpm('HERE');
+//  $f =   variable_get('transpose_form', '');
+  dpm($side_by_side_form_array);
 //      dpm($form['persons']['1']);
 //      dpm($form['persons']['2']);
-  
-	foreach (element_children($form['persons']) as $key) {
+
+	foreach ($side_by_side_form_array as $value) {
 		$row = array();
-		if (isset($form['persons'][$key])) {
-      foreach ($form['persons'][$key] as $field_value) {
-        $new_array[] = $field_value;
-      }
-      $new_arrays[] = $new_array;
-//  dpm($form['persons'][$key]['first_name']);
-//      dpm($form['persons'][$key]);
-//			$data = drupal_render($form['persons'][$key]);
-//			$row[] = array('data' => $data);
-//      dpm($row);
+    $data1 = drupal_render($value[0]);
+    $data2 = drupal_render($value[1]);
+    dpm('$data1 = ');
+    dpm($data1);
+    $rows[] = array($data1, $data2);
+
+//    $row[] = array('data' => $data);
 //
-//			$row[] = drupal_render($form['persons']['1'])  drupal_render($form['persons']['2']);
-//			$row[] = array('data' => drupal_render($form['persons'][$key]['first_name']));
+//			$status = drupal_render($form['featured'][$key]);
+//			$row[] = array('data' => $status, 'class' => 'checkbox');
+//
+//			$row[] = ''. drupal_render($form[$key]['name']) .'';
+//			$row[] = array('data' => drupal_render($form[$key]['category']));
 //			$row[] = array('data' => drupal_render($form[$key]['discount']));
 //			$row[] = array('data' => drupal_render($form[$key]['createdon']));
-//
-		}
+
+//			$rows[] = $row;
 	}
-  $rows[] = $row;
-//  dpm('$rows = ');
-//  dpm($rows);
+
+  dpm('$rows = ');
+  dpm($rows);
 
 	// Individual table headers.
 	$header = array();
-	$header[] = array('data' => t('Featured'), 'class' => 'checkbox');
-	$header[] = t('Name');
-	$header[] = t('Category');
-	$header[] = t('Discount');
-	$header[] = t('Created on');
+//	$header[] = array('data' => t('First person'), 'class' => 'checkbox');
+	$header[] = t('First person');
+	$header[] = t('Second Person');
+//	$header[] = t('Discount');
+//	$header[] = t('Created on');
 
 	$output = theme('table', $header, $rows);
-	$output .= drupal_render($form);
+//	$output .= drupal_render($form);
 	return $output;
 }
 
@@ -221,44 +243,26 @@ function _get_nodes($number) {
 }
 
 function _transpose_form($form) {
-//  dpm('HERE!');
-//      dpm($form['persons']['1']);
-//      dpm($form['persons']['2']);
+  $person_fields = _person_fields();
+//  array(
+//    'first_name',
+//    'last_name',
+//    'organization',
+//    'address',
+//    'city',
+//    'state',
+//    'zipcode',
+//    'country',
+//    'phone',
+//    'fax',
+//    'email',
+//  );
 
-
-  $person_fields = array(
-    'first_name',
-    'last_name',
-    'organization',
-    'address',
-    'city',
-    'state',
-    'zipcode',
-    'country',
-    'phone',
-    'fax',
-    'email',
-  );
-
-//	foreach (element_children($form['persons']) as $key) {
   foreach ($person_fields as $field_name) {
-//  dpm($form['persons']['1'][$field_name]);
-    $a[] = array($form['persons']['1'][$field_name], $form['persons']['2'][$field_name]);
+    $side_by_side_form_array[] = array($form['persons']['1'][$field_name], $form['persons']['2'][$field_name]);
   }
-  dpm($a);
-//  dpm($form['persons']['1'][$field_name]);
-
-
-//    if (isset($form['persons'][$key])) {
-//      foreach ($form['persons'][$key] as $field_value) {
-//        $new_array[] = $field_value;
-//        dpm($new_array);
-//      }
-////      $new_arrays[] = $new_array;
-////      dpm($new_arrays);
-//    }
-//  }
-
+//  dpm($side_by_side_form_array);
+  return $side_by_side_form_array;
 }
 
 /*

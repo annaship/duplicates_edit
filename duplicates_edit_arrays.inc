@@ -311,3 +311,20 @@ function country_list() {
  );
  return $country_list;
 }
+
+function _person_fields() {
+  $person_fields = array(
+    'first_name',
+    'last_name',
+    'organization',
+    'address',
+    'city',
+    'state',
+    'zipcode',
+    'country',
+    'phone',
+    'fax',
+    'email',
+  );
+  return $person_fields;
+}
