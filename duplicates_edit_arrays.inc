@@ -325,6 +325,7 @@ function _person_fields() {
     'phone',
     'fax',
     'email',
+    'keep_this_node',
   );
   return $person_fields;
 }

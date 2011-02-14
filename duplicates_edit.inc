@@ -129,7 +129,14 @@ function person_subform($form, $number) {
     // '#required'  => TRUE,
     '#size'  => 60,
     '#maxlength' => 60,
-    );
+  );
+
+  $form['persons'][$number]['keep_this_node'] = array (
+      '#type' => 'checkbox',
+      '#title' => t('keep_this_node'),
+      '#size' => 4,
+      '#default_value' => 1,
+  );
 
   // Commented fields are here in case we will need them
 
@@ -156,65 +163,38 @@ function duplicates_edit_theme() {
 
 function theme_duplicates_edit_form($form) {
 	$rows = array();
-//  _person_fields();
-  $person_fields = array(
-    'first_name',
-    'last_name',
-    'organization',
-    'address',
-    'city',
-    'state',
-    'zipcode',
-    'country',
-    'phone',
-    'fax',
-    'email',
-  );
+//  
+  $person_fields = _person_fields();
+//  array(
+//    'first_name',
+//    'last_name',
+//    'organization',
+//    'address',
+//    'city',
+//    'state',
+//    'zipcode',
+//    'country',
+//    'phone',
+//    'fax',
+//    'email',
+//  );
 
   foreach ($person_fields as $field_name) {
     $side_by_side_form_array[] = array($form['persons']['1'][$field_name], $form['persons']['2'][$field_name]);
   }
 
-  dpm('HERE');
-//  $f =   variable_get('transpose_form', '');
-  dpm($side_by_side_form_array);
-//      dpm($form['persons']['1']);
-//      dpm($form['persons']['2']);
-
 	foreach ($side_by_side_form_array as $value) {
 		$row = array();
     $data1 = drupal_render($value[0]);
     $data2 = drupal_render($value[1]);
-    dpm('$data1 = ');
-    dpm($data1);
     $rows[] = array($data1, $data2);
-
-//    $row[] = array('data' => $data);
-//
-//			$status = drupal_render($form['featured'][$key]);
-//			$row[] = array('data' => $status, 'class' => 'checkbox');
-//
-//			$row[] = ''. drupal_render($form[$key]['name']) .'';
-//			$row[] = array('data' => drupal_render($form[$key]['category']));
-//			$row[] = array('data' => drupal_render($form[$key]['discount']));
-//			$row[] = array('data' => drupal_render($form[$key]['createdon']));
-
-//			$rows[] = $row;
 	}
-
-  dpm('$rows = ');
-  dpm($rows);
-
-	// Individual table headers.
 	$header = array();
 //	$header[] = array('data' => t('First person'), 'class' => 'checkbox');
 	$header[] = t('First person');
 	$header[] = t('Second Person');
-//	$header[] = t('Discount');
-//	$header[] = t('Created on');
 
 	$output = theme('table', $header, $rows);
-//	$output .= drupal_render($form);
 	return $output;
 }
 
