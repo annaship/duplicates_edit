@@ -214,7 +214,6 @@ function duplicates_edit_form_submit($form, &$form_state) {
   $ref_node_nids = _collect_ref_nids($bad_node_nid, $good_node_nid);
   _update_ref_nodes($ref_node_nids, $bad_node_nid, $good_node_nid);
   node_delete($bad_node_nid);
-  drupal_set_message("Node $bad_node_nid was deleted");
 }
 
 function _collect_ref_nids($bad_node_nid, $good_node_nid) {
