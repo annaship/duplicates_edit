@@ -34,7 +34,7 @@ function duplicates_edit_form($form_state) {
 
 	$form['cancel'] = array(
 		'#type' => 'markup',
-		'#value' => l(t('Cancel'), 'duplicates_check'),
+		'#value' => l(t('Cancel'), 'duplicates_edit'),
 	);
 
 //	$form['#redirect'] = ‘featured_product_mgmt’;
@@ -190,16 +190,14 @@ function person_subform($form, $number) {
 
 function duplicates_edit_theme($existing, $type, $theme, $path) {
   return array(
-    'duplicates_check_form_table' => array(
+    'duplicates_edit_form_table' => array(
       'arguments' => array('fieldset' => NULL),
     )
   );
 }
 
 //function theme_duplicates_edit_form($form) {
-function theme_duplicates_check_form_table($container) {
-//  dpm("\$container = ");
-//  dpm($container);
+function theme_duplicates_edit_form_table($container) {
   $output = '';
 	$header = array();
 	$rows   = array();
@@ -249,6 +247,12 @@ function theme_duplicates_check_form_table($container) {
 //  dpm($form);
 //  dpm("HERE!");
   $side_by_side_form_array = _transpose_form_array($container);
+  dpm("\$side_by_side_form_array = ");
+  dpm($side_by_side_form_array);
+//  dpr("\$side_by_side_form_array = ");
+//  dpr($side_by_side_form_array);
+//  print("\$side_by_side_form_array = ");
+//  print_r($side_by_side_form_array);
 
 	foreach ($side_by_side_form_array as $value) {
     $data1 = drupal_render($value[1]);
@@ -365,7 +369,7 @@ function _transpose_form_array($form) {
   $person_fields = _person_fields();
 
   foreach ($person_fields as $field_name => $field_title) {
-    $side_by_side_form_array[] = array($field_title, $form['persons']['1'][$field_name], $form['persons']['2'][$field_name]);
+    $side_by_side_form_array[] = array($field_title, $form['1'][$field_name], $form['2'][$field_name]);
   }
 
   return $side_by_side_form_array;
