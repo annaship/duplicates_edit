@@ -210,66 +210,32 @@ function duplicates_edit_form_submit($form, &$form_state) {
       }
     }
   }
-           /*
-     Updating database
-     *
+  _update_references($bad_node_nid, $good_node_nid);
+}
 
-     *
-  update content_field_dataset_ext_assoc_ref set field_dataset_ext_assoc_ref_nid = 45622 where field_dataset_ext_assoc_ref_nid = 45621;
-    TODO: in a loop
-  $sql = "UPDATE {content_field_dataset_ext_assoc_ref} set field_dataset_ext_assoc_ref_nid = 45622 WHERE field_dataset_ext_assoc_ref_nid = 45621";
-     */
-
+function _update_references($bad_node_nid, $good_node_nid) {
   $ref_fields = _ref_fields();
   foreach ($ref_fields as $tab_name => $field_name) {
     $full_field_name = $field_name . "_nid";
     $nids = array();
-//    $sql = "select nid from node where nid in (select nid from content_field_dataset_ext_assoc_ref where field_dataset_ext_assoc_ref_nid = 45707);";
-//    $sql = "SELECT nid FROM {node} WHERE nid IN (SELECT nid FROM content_field_dataset_ext_assoc_ref WHERE field_dataset_ext_assoc_ref_nid = 45707);";
     $sql        = "SELECT nid FROM {node} WHERE nid IN (SELECT nid FROM {%s} WHERE %s = %d);";
     $db_result  = db_query($sql, $tab_name, $full_field_name, $bad_node_nid);
     while ($nid = db_result($db_result)) {
-      dpm('$tab_name = ' . $tab_name . ', $full_field_name = ' . $full_field_name . ', $bad_node_nid = ' . $bad_node_nid);
-      dpm($nid);
       $dataset_node = node_load($nid);
+      dpm($dataset_node);
       $dataset_ref = $dataset_node->$field_name;
-      dpm('before, $dataset_ref = ');
-      dpm($dataset_ref);
       foreach ($dataset_ref as $number => $value) {
-        dpm('$number = ' . $number);
         foreach ($value as $key => $ref_nid) {
           if ($ref_nid == $bad_node_nid) {
-            dpm('$ref_nid = ' . $ref_nid);
             $dataset_ref[$number][nid] = $good_node_nid;
           }
         }
       }
-      dpm('after, $dataset_ref = ');
-      dpm($dataset_ref);
-//      dpm($dataset_node);
-    //  node_save($dataset_node);
+      node_save($dataset_node);
+      dpm($dataset_node);
     }
   }
 }
-
-//    dpm('$tab_name = ' . $tab_name . ', $field_name = ' . $field_name . ', $good_node_nid = ' . $good_node_nid . ', $field_name = ' . $field_name . ', $bad_node_nid = ' . $bad_node_nid);
-//    $sql = "SELECT nid FROM {%s} WHERE %s = %d OR %s = %d;";
-//    $db_result = db_query($sql, $tab_name, $field_name, $good_node_nid);
-//    $sql = "UPDATE {%s} SET %s = %d WHERE %s = %d";
-//    $sql = "update content_field_dataset_ext_assoc_ref set field_dataset_ext_assoc_ref_nid = 3110 where field_dataset_ext_assoc_ref_nid = 45622;";
-//    $db_result = db_query($sql);
-//    dpm($db_result);
-//    node_delete(45622);
-//    cache_clear_all();
-//    dpm(node_load(45696));
-
-//    $db_result = db_query($sql, $tab_name, $field_name, (int)$good_node_nid, $field_name, (int)$bad_node_nid);
-//  TODO: delete_node with $bad_node_nid
-//$tab_name = content_field_dataset_site_ref, $field_name = field_dataset_site_ref_nid, $good_node_nid = 45697,
-//$field_name = field_dataset_site_ref_nid, $bad_node_nid = 45620
-//    dpm(node_load(45696));45706
-
-
 
 function _get_nodes($number) {
   $checked_nides = variable_get('checked_nides', '');
