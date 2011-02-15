@@ -211,39 +211,50 @@ function duplicates_edit_form_submit($form, &$form_state) {
     }
   }
 
-  $ref_fields = _ref_fields();
+  $ref_node_nids = _collect_ref_nids($bad_node_nid, $good_node_nid);
+  /*
+  dpm($ref_node_nids);
+   * ... (Array, 1 element)
+45706 (Array, 2 elements)
+0 (String, 27 characters ) field_dataset_ext_assoc_ref
+1 (String, 23 characters ) field_dataset_owner_ref
+   */
+  _update_ref_nodes($ref_node_nids, $bad_node_nid, $good_node_nid);
+}
+
+function _collect_ref_nids($bad_node_nid, $good_node_nid) {
+  $ref_fields   = _ref_fields();
+  $nids       = array();
   foreach ($ref_fields as $tab_name => $field_name) {
     $full_field_name = $field_name . "_nid";
-    $nids = array();
     $sql        = "SELECT nid FROM {node} WHERE nid IN (SELECT nid FROM {%s} WHERE %s = %d);";
     $db_result  = db_query($sql, $tab_name, $full_field_name, (int)$bad_node_nid);
     while ($nid = db_result($db_result)) {
-      dpm($nid);
-      $dataset_node = node_load($nid);
-      dpm('node_load');
-      dpm($dataset_node);
+      $nids[$nid][]   = $field_name;
+    }
+  }
+  return $nids;
+}
 
-      $dataset_ref = $dataset_node->$field_name;
-      /*TODO: take array, modify, save back to node*/
-      foreach ($dataset_ref as $number => $value) {
-        foreach ($value as $key => $ref_nid) {
-          if ($ref_nid == $bad_node_nid) {
-            dpm('$number = ' . $number);
-            dpm('$bad_node_nid = ' . $bad_node_nid);
-            dpm('$good_node_nid = ' . $good_node_nid);
-            dpm('BEFORE: $dataset_ref = ');
-            dpm($dataset_ref);
-            $dataset_ref[$number][nid] = $good_node_nid;
-            dpm('$dataset_ref = ');
-            dpm('BEFORE: $dataset_node = ');
-            dpm($dataset_node);
-            $dataset_node->$field_name = $dataset_ref;
-            node_save($dataset_node);
-            dpm('AFTER: $dataset_node = ');
-            dpm($dataset_node);
+function _update_ref_nodes($ref_node_nids, $bad_node_nid, $good_node_nid) {
+  if (!empty($ref_node_nids)) {
+    foreach ($ref_node_nids as $ref_nid => $value) {
+      dpm($ref_nid);
+      $node_ref = node_load($ref_nid);
+      foreach ($value as $ref_field) {
+        $new_ref_array = array();
+        foreach ($node_ref->$ref_field as $person_ref_nid) {
+          if ($person_ref_nid[nid] == $bad_node_nid) {
+            $new_ref_array[] = array('nid' => $good_node_nid);
+          }
+          else {
+            $new_ref_array[] = array('nid' => $person_ref_nid[nid]);
           }
         }
+        $node_ref->$ref_field = $new_ref_array;
       }
+      node_save(&$node_ref);
+//      TODO: delete bad node
     }
   }
 }
