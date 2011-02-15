@@ -239,8 +239,15 @@ function duplicates_edit_form_submit($form, &$form_state) {
 //$tab_name = content_field_dataset_site_ref, $field_name = field_dataset_site_ref_nid, $good_node_nid = 45697,
 //$field_name = field_dataset_site_ref_nid, $bad_node_nid = 45620
 //    dpm(node_load(45696));45706
-
-
+  $nids = array();
+  $sql = "select nid from node where nid in (select nid from content_field_dataset_ext_assoc_ref where field_dataset_ext_assoc_ref_nid = 45707);";
+  $db_result = db_query($sql);
+  $nid = db_result($db_result);
+//  while ($nid = db_result($db_result)) {
+//      $nids[] = $nid;
+//  }
+//  dpm($nids);
+  dpm(node_load($nid));
 }
 
 
