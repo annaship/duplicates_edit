@@ -247,7 +247,9 @@ function duplicates_edit_form_submit($form, &$form_state) {
 //      $nids[] = $nid;
 //  }
 //  dpm($nids);
-  dpm(node_load($nid));
+  $dataset_node = node_load($nid);
+  $dataset_node->field_dataset_ext_assoc_ref[0][nid] = 3110;
+  dpm($dataset_node);
 }
 
 
