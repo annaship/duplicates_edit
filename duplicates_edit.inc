@@ -276,8 +276,12 @@ function theme_duplicates_edit_form_table($container) {
 
 function duplicates_edit_form_submit($form, &$form_state) {
   dpm('Submit!');
+  dpm('$form_state');
+  dpm($form_state);
   $good_node_nid = $bad_node_nid = 0;
-  foreach ($form_state['values'] as $key => $value) {
+  foreach ($form_state['values'] as $value) {
+  dpm('$value');
+  dpm($value);
 //TODO: should work, if only one is checked,
 // handle another situation (1,1; 0,0)
     if (is_array($value)) {
@@ -289,6 +293,8 @@ function duplicates_edit_form_submit($form, &$form_state) {
       }
     }
   }
+  dpm('$bad_node_nid = ' . $bad_node_nid);
+  dpm('$good_node_nid = ' . $good_node_nid);
 
   $ref_node_nids = _collect_ref_nids($bad_node_nid, $good_node_nid);
   _update_ref_nodes($ref_node_nids, $bad_node_nid, $good_node_nid);
@@ -306,6 +312,8 @@ function _collect_ref_nids($bad_node_nid, $good_node_nid) {
       $nids[$nid][]   = $field_name;
     }
   }
+  dpm('$nids = ');
+  dpm($nids);
   return $nids;
 }
 
@@ -363,9 +371,6 @@ function _del_variables() {
 }
 
 function _transpose_form_array($form) {
-  dpm('in _transpose_form_array');
-  dpm($form);
-  
   $person_fields = _person_fields();
 
   foreach ($person_fields as $field_name => $field_title) {
