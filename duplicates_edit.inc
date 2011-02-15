@@ -227,17 +227,13 @@ function duplicates_edit_form_submit($form, &$form_state) {
 //    $sql = "SELECT nid FROM {%s} WHERE %s = %d OR %s = %d;";
 //    $db_result = db_query($sql, $tab_name, $field_name, $good_node_nid);
 //    $sql = "UPDATE {%s} SET %s = %d WHERE %s = %d";
-    $sql = "update content_field_dataset_ext_assoc_ref set field_dataset_ext_assoc_ref_nid = 3110 where field_dataset_ext_assoc_ref_nid = 45622;";
-    /*works in Heidi!
-     * warning: mysql_num_rows() expects parameter 1 to be resource, boolean given in /Library/WebServer/Documents/drupal6-local/includes/database.mysql.inc on line 185.
-//update content_field_dataset_ext_assoc_ref set field_dataset_ext_assoc_ref_nid = 45622 where field_dataset_ext_assoc_ref_nid = 45621;
-//update content_field_dataset_ext_assoc_ref set field_dataset_ext_assoc_ref_nid = 45622 where field_dataset_ext_assoc_ref_nid = 3110;
-//select * from content_field_dataset_ext_assoc_ref where field_dataset_ext_assoc_ref_nid = 45622;
-select * from node where nid in (select nid from content_field_dataset_ext_assoc_ref where field_dataset_ext_assoc_ref_nid = 45622);
-//SELECT * from content_field_dataset_ext_assoc_ref WHERE  field_dataset_ext_assoc_ref_nid = 45622
-     */
-    $db_result = db_query($sql);
-    dpm($db_result);
+//    $sql = "update content_field_dataset_ext_assoc_ref set field_dataset_ext_assoc_ref_nid = 3110 where field_dataset_ext_assoc_ref_nid = 45622;";
+//    $db_result = db_query($sql);
+//    dpm($db_result);
+//    node_delete(45622);
+//    cache_clear_all();
+//    dpm(node_load(45696));
+
 //    $db_result = db_query($sql, $tab_name, $field_name, (int)$good_node_nid, $field_name, (int)$bad_node_nid);
 //  TODO: delete_node with $bad_node_nid
 //$tab_name = content_field_dataset_site_ref, $field_name = field_dataset_site_ref_nid, $good_node_nid = 45697,
@@ -245,14 +241,6 @@ select * from node where nid in (select nid from content_field_dataset_ext_assoc
 //    dpm(node_load(45696));45706
 
 
-//  $db_result = db_query($sql, $tab_name, $field_name, $good_node_nid, $field_name, $bad_node_nid);
-//  $res = db_fetch_object($db_result);
-//    while ($res = db_result($db_result)) {
-//      dpm('res = ');
-//      dpm($res);
-//  //    $nids[] = $nid;
-//    }
-//  }
 }
 
 
