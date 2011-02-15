@@ -203,39 +203,51 @@ function duplicates_edit_form_submit($form, &$form_state) {
 // handle another situation (1,1; 0,0)
     if (is_array($value)) {
       if ($value['keep_this_node'] == 0) {
-        $bad_node_nid = (int)$value['nid'];
+        $bad_node_nid = $value['nid'];
       }
       elseif ($value['keep_this_node'] == 1) {
-        $good_node_nid = (int)$value['nid'];
+        $good_node_nid = $value['nid'];
       }
     }
   }
-  _update_references($bad_node_nid, $good_node_nid);
-}
 
-function _update_references($bad_node_nid, $good_node_nid) {
   $ref_fields = _ref_fields();
   foreach ($ref_fields as $tab_name => $field_name) {
     $full_field_name = $field_name . "_nid";
     $nids = array();
     $sql        = "SELECT nid FROM {node} WHERE nid IN (SELECT nid FROM {%s} WHERE %s = %d);";
-    $db_result  = db_query($sql, $tab_name, $full_field_name, $bad_node_nid);
+    $db_result  = db_query($sql, $tab_name, $full_field_name, (int)$bad_node_nid);
     while ($nid = db_result($db_result)) {
+      dpm($nid);
       $dataset_node = node_load($nid);
+      dpm('node_load');
       dpm($dataset_node);
+
       $dataset_ref = $dataset_node->$field_name;
+      /*TODO: take array, modify, save back to node*/
       foreach ($dataset_ref as $number => $value) {
         foreach ($value as $key => $ref_nid) {
           if ($ref_nid == $bad_node_nid) {
+            dpm('$number = ' . $number);
+            dpm('$bad_node_nid = ' . $bad_node_nid);
+            dpm('$good_node_nid = ' . $good_node_nid);
+            dpm('BEFORE: $dataset_ref = ');
+            dpm($dataset_ref);
             $dataset_ref[$number][nid] = $good_node_nid;
+            dpm('$dataset_ref = ');
+            dpm('BEFORE: $dataset_node = ');
+            dpm($dataset_node);
+            $dataset_node->$field_name = $dataset_ref;
+            node_save($dataset_node);
+            dpm('AFTER: $dataset_node = ');
+            dpm($dataset_node);
           }
         }
       }
-      node_save($dataset_node);
-      dpm($dataset_node);
     }
   }
 }
+
 
 function _get_nodes($number) {
   $checked_nides = variable_get('checked_nides', '');
