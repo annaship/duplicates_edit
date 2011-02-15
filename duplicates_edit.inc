@@ -228,8 +228,8 @@ function duplicates_edit_form_submit($form, &$form_state) {
     $nids = array();
 //    $sql = "select nid from node where nid in (select nid from content_field_dataset_ext_assoc_ref where field_dataset_ext_assoc_ref_nid = 45707);";
 //    $sql = "SELECT nid FROM {node} WHERE nid IN (SELECT nid FROM content_field_dataset_ext_assoc_ref WHERE field_dataset_ext_assoc_ref_nid = 45707);";
-    $sql = "SELECT nid FROM {node} WHERE nid IN (SELECT nid FROM {%s} WHERE %s = 45707);";
-    $db_result = db_query($sql, $tab_name, $full_field_name);
+    $sql = "SELECT nid FROM {node} WHERE nid IN (SELECT nid FROM {%s} WHERE %s = %d);";
+    $db_result = db_query($sql, $tab_name, $full_field_name, (int)$bad_node_nid);
     while ($nid = db_result($db_result)) {
       dpm($nid);
       $dataset_node = node_load($nid);
