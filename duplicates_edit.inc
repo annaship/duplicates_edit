@@ -212,14 +212,9 @@ function duplicates_edit_form_submit($form, &$form_state) {
   }
 
   $ref_node_nids = _collect_ref_nids($bad_node_nid, $good_node_nid);
-  /*
-  dpm($ref_node_nids);
-   * ... (Array, 1 element)
-45706 (Array, 2 elements)
-0 (String, 27 characters ) field_dataset_ext_assoc_ref
-1 (String, 23 characters ) field_dataset_owner_ref
-   */
   _update_ref_nodes($ref_node_nids, $bad_node_nid, $good_node_nid);
+  node_delete($bad_node_nid);
+  drupal_set_message("Node $bad_node_nid was deleted");
 }
 
 function _collect_ref_nids($bad_node_nid, $good_node_nid) {
@@ -239,7 +234,6 @@ function _collect_ref_nids($bad_node_nid, $good_node_nid) {
 function _update_ref_nodes($ref_node_nids, $bad_node_nid, $good_node_nid) {
   if (!empty($ref_node_nids)) {
     foreach ($ref_node_nids as $ref_nid => $value) {
-      dpm($ref_nid);
       $node_ref = node_load($ref_nid);
       foreach ($value as $ref_field) {
         $new_ref_array = array();
