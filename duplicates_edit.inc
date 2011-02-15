@@ -221,8 +221,25 @@ function duplicates_edit_form_submit($form, &$form_state) {
      */
 
   $ref_fields = _ref_fields();
+  dpm(node_load(2835));
+  dpm(node_load(45708));
+  foreach ($ref_fields as $tab_name => $field_name) {
+    $full_field_name = $field_name . "_nid";
+    $nids = array();
+//    $sql = "select nid from node where nid in (select nid from content_field_dataset_ext_assoc_ref where field_dataset_ext_assoc_ref_nid = 45707);";
+//    $sql = "SELECT nid FROM {node} WHERE nid IN (SELECT nid FROM content_field_dataset_ext_assoc_ref WHERE field_dataset_ext_assoc_ref_nid = 45707);";
+    $sql = "SELECT nid FROM {node} WHERE nid IN (SELECT nid FROM {%s} WHERE %s = 45707);";
+    $db_result = db_query($sql, $tab_name, $full_field_name);
+    while ($nid = db_result($db_result)) {
+      dpm($nid);
+      $dataset_node = node_load($nid);
+      $dataset_node->field_dataset_ext_assoc_ref[0][nid] = 3110;
+      dpm($dataset_node);
+    //  node_save($dataset_node);
+    }
+  }
+}
 
-//  foreach ($ref_fields as $tab_name => $field_name) {
 //    dpm('$tab_name = ' . $tab_name . ', $field_name = ' . $field_name . ', $good_node_nid = ' . $good_node_nid . ', $field_name = ' . $field_name . ', $bad_node_nid = ' . $bad_node_nid);
 //    $sql = "SELECT nid FROM {%s} WHERE %s = %d OR %s = %d;";
 //    $db_result = db_query($sql, $tab_name, $field_name, $good_node_nid);
@@ -239,20 +256,7 @@ function duplicates_edit_form_submit($form, &$form_state) {
 //$tab_name = content_field_dataset_site_ref, $field_name = field_dataset_site_ref_nid, $good_node_nid = 45697,
 //$field_name = field_dataset_site_ref_nid, $bad_node_nid = 45620
 //    dpm(node_load(45696));45706
-  $nids = array();
-  $sql = "select nid from node where nid in (select nid from content_field_dataset_ext_assoc_ref where field_dataset_ext_assoc_ref_nid = 45707);";
-  $db_result = db_query($sql);
-//  $nid = db_result($db_result);
-  while ($nid = db_result($db_result)) {
-//      $nids[] = $nid;
-    dpm($nid);
-    $dataset_node = node_load($nid);
-    $dataset_node->field_dataset_ext_assoc_ref[0][nid] = 3110;
-    dpm($dataset_node);
-  //  node_save($dataset_node);
-  }
 
-}
 
 
 function _get_nodes($number) {
