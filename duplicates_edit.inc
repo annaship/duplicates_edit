@@ -302,8 +302,6 @@ function _transpose_form_array($form) {
 }
 
 function _update_good_node($form_state) {
-  dpm($form_state);
-  dpm($good_node_nid);
 
   $person_field_names = _person_field_names();
 
@@ -317,4 +315,3 @@ function _update_good_node($form_state) {
     }
   }
 }
-
