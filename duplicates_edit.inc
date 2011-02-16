@@ -1,5 +1,5 @@
 <?php
-
+//!!! 37919, 28
 require_once('duplicates_edit_arrays.inc');
 
 function duplicates_edit_page()
@@ -55,20 +55,20 @@ function person_subform($form, $number) {
 
   $number == '1' ? $ord_number = 'First' : $ord_number = 'Second';
 
-//  $form['container'][$number] = array(
-//    '#type' => 'fieldset',
-////    '#title' => t($ord_number . ' node'),
-//    '#tree' => TRUE,
-//    '#collapsible' => TRUE,
-//    '#collapsed' => FALSE,
-//  );
+  $form['container']['person'][$number] = array(
+    '#type' => 'fieldset',
+//    '#title' => t($ord_number . ' node'),
+    '#tree' => TRUE,
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
 
-  $form['container'][$number]['nid']  = array(
+  $form['container']['person'][$number]['nid']  = array(
     '#type' => 'hidden',
     '#value' => variable_get('nid', ''),
   );
 
-  $form['container'][$number]['first_name'] = array (
+  $form['container']['person'][$number]['first_name'] = array (
     '#type'  => 'textfield',
 //    '#title' => t('first_name'),
     '#default_value' => variable_get('first_name', ''),
@@ -76,7 +76,7 @@ function person_subform($form, $number) {
     '#maxlength' => 60,
   );
 
-  $form['container'][$number]['last_name'] = array (
+  $form['container']['person'][$number]['last_name'] = array (
     '#type'  => 'textfield',
 //    '#title' => t('last_name'),
     '#default_value' => variable_get('last_name', ''),
@@ -84,7 +84,7 @@ function person_subform($form, $number) {
     '#maxlength' => 60,
   );
 
-  $form['container'][$number]['organization'] = array (
+  $form['container']['person'][$number]['organization'] = array (
     '#type'  => 'textfield',
 //    '#title' => t('organization'),
     '#default_value' => variable_get('organization', ''),
@@ -92,7 +92,7 @@ function person_subform($form, $number) {
     '#maxlength' => 60,
     );
 
-  $form['container'][$number]['address'] = array (
+  $form['container']['person'][$number]['address'] = array (
     '#type'  => 'textfield',
 //    '#title' => t('address'),
     '#default_value' => variable_get('address', ''),
@@ -100,7 +100,7 @@ function person_subform($form, $number) {
     '#maxlength' => 100,
     );
 
-  $form['container'][$number]['city'] = array (
+  $form['container']['person'][$number]['city'] = array (
     '#type'  => 'textfield',
 //    '#title' => t('city'),
     '#default_value' => variable_get('city', ''),
@@ -108,14 +108,14 @@ function person_subform($form, $number) {
     '#maxlength' => 60,
     );
 
-  $form['container'][$number]['state'] = array(
+  $form['container']['person'][$number]['state'] = array(
     '#type' => 'select',
 //    '#title' => t('state'),
     '#default_value' => variable_get('state', ''),
     '#options' => $states,
   );
 
-  $form['container'][$number]['zipcode'] = array (
+  $form['container']['person'][$number]['zipcode'] = array (
     '#type'  => 'textfield',
 //    '#title' => t('zipcode'),
     '#default_value' => variable_get('zipcode', ''),
@@ -123,14 +123,14 @@ function person_subform($form, $number) {
     '#maxlength' => 60,
     );
 
-  $form['container'][$number]['country'] = array(
+  $form['container']['person'][$number]['country'] = array(
     '#type' => 'select',
 //    '#title' => t('country'),
     '#default_value' => variable_get('country', ''),
     '#options' => $country_list,
   );
 
-  $form['container'][$number]['phone'] = array (
+  $form['container']['person'][$number]['phone'] = array (
     '#type'  => 'textfield',
 //    '#title' => t('phone'),
     '#default_value' => variable_get('phone', ''),
@@ -138,7 +138,7 @@ function person_subform($form, $number) {
     '#maxlength' => 60,
     );
 
-  $form['container'][$number]['fax'] = array (
+  $form['container']['person'][$number]['fax'] = array (
     '#type'  => 'textfield',
 //    '#title' => t('fax'),
     '#default_value' => variable_get('fax', ''),
@@ -146,12 +146,12 @@ function person_subform($form, $number) {
     '#maxlength' => 60,
     );
 
-//  $form['container'][$number]['role'] = array(
+//  $form['container']['person'][$number]['role'] = array(
 //    '#type' => 'value',
 //    '#value' => $number_title,
 //  );
 
-  $form['container'][$number]['email'] = array (
+  $form['container']['person'][$number]['email'] = array (
     '#type'  => 'textfield',
 //    '#title' => t('email'),
     '#default_value' => variable_get('email', ''),
@@ -160,7 +160,7 @@ function person_subform($form, $number) {
     '#maxlength' => 60,
   );
 
-  $form['container'][$number]['keep_this_node'] = array (
+  $form['container']['person'][$number]['keep_this_node'] = array (
       '#type' => 'checkbox',
 //      '#title' => t('keep_this_node'),
       '#size' => 4,
@@ -171,7 +171,7 @@ function person_subform($form, $number) {
 
 
 
-  // $form['container'][$number]['personid'] = array (
+  // $form['container']['person'][$number]['personid'] = array (
   //   '#type'  => 'textfield',
   //   '#title' => t('personid'),
 //   //   '#default_value' => $personid,
@@ -242,17 +242,7 @@ function theme_duplicates_edit_form_table($container) {
 //    '#maxlength' => 60,
 //  );
 
-
-//  dpm("\$form = ");
-//  dpm($form);
-//  dpm("HERE!");
   $side_by_side_form_array = _transpose_form_array($container);
-  dpm("\$side_by_side_form_array = ");
-  dpm($side_by_side_form_array);
-//  dpr("\$side_by_side_form_array = ");
-//  dpr($side_by_side_form_array);
-//  print("\$side_by_side_form_array = ");
-//  print_r($side_by_side_form_array);
 
 	foreach ($side_by_side_form_array as $value) {
     $data1 = drupal_render($value[1]);
@@ -261,27 +251,31 @@ function theme_duplicates_edit_form_table($container) {
 	}
   $header = array('', t('First person'), t('Second Person'));
 
-	$output = theme('table', $header, $rows);
-  return theme_table($header, $rows);
+//	$output = theme('table', $header, $rows);
+  $output = theme_table($header, $rows);
   
-//  $output .= drupal_render($form['submit']);
-//  $output .= drupal_render($form['cancel']);
 //  dpm("\$form = ");
 //  dpm($form);
-//	$output .= drupal_render($form);
+	$output .= drupal_render($form);
 //
-//	return $output;
+	return $output;
 }
-
 
 function duplicates_edit_form_submit($form, &$form_state) {
   dpm('Submit!');
+  dpm('$form');
+  dpm($form);
+//  in form is only second person! (keep is 0)
   dpm('$form_state');
   dpm($form_state);
   $good_node_nid = $bad_node_nid = 0;
   foreach ($form_state['values'] as $value) {
   dpm('$value');
   dpm($value);
+  dpm('$value[\'keep_this_node\'] = ');
+  dpm($value['keep_this_node']);
+
+//  TODO: save changes in form
 //TODO: should work, if only one is checked,
 // handle another situation (1,1; 0,0)
     if (is_array($value)) {
@@ -296,9 +290,11 @@ function duplicates_edit_form_submit($form, &$form_state) {
   dpm('$bad_node_nid = ' . $bad_node_nid);
   dpm('$good_node_nid = ' . $good_node_nid);
 
-  $ref_node_nids = _collect_ref_nids($bad_node_nid, $good_node_nid);
-  _update_ref_nodes($ref_node_nids, $bad_node_nid, $good_node_nid);
-  node_delete($bad_node_nid);
+  if (!empty($good_node_nid) && !empty($bad_node_nid)) {
+    $ref_node_nids = _collect_ref_nids($bad_node_nid, $good_node_nid);
+    _update_ref_nodes($ref_node_nids, $bad_node_nid, $good_node_nid);
+    node_delete($bad_node_nid);
+  }
 }
 
 function _collect_ref_nids($bad_node_nid, $good_node_nid) {
@@ -374,7 +370,7 @@ function _transpose_form_array($form) {
   $person_fields = _person_fields();
 
   foreach ($person_fields as $field_name => $field_title) {
-    $side_by_side_form_array[] = array($field_title, $form['1'][$field_name], $form['2'][$field_name]);
+    $side_by_side_form_array[] = array($field_title, $form['person']['1'][$field_name], $form['person']['2'][$field_name]);
   }
 
   return $side_by_side_form_array;
