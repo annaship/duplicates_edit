@@ -30,7 +30,7 @@ function duplicates_edit_form($form_state) {
 
 	$form['cancel'] = array(
 		'#type' => 'markup',
-		'#value' => l(t('Cancel'), 'duplicates_edit'),
+		'#value' => l(t('Cancel'), 'duplicates_check'),
 	);
 
   return $form;
