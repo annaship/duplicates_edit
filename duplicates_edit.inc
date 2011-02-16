@@ -1,5 +1,8 @@
 <?php
-//!!! 37919, 28
+//TODO: clear theme cashe
+// TODO: tests
+// show message, what deleted and what updated
+
 require_once('duplicates_edit_arrays.inc');
 
 function duplicates_edit_page()
@@ -18,14 +21,6 @@ function duplicates_edit_form($form_state) {
 
   $form = person_subform($form, '1');
   $form = person_subform($form, '2');
-//  dpm($form);
-
-//  $form['persons_information'] = array(
-//   '#type' => 'fieldset',
-//   '#title' => t('Persons Information'),
-//   '#collapsible' => FALSE,
-//   '#weight' => 0,
-//  );
 
 	$form['submit'] = array(
 		'#type' => 'submit',
@@ -36,13 +31,6 @@ function duplicates_edit_form($form_state) {
 		'#type' => 'markup',
 		'#value' => l(t('Cancel'), 'duplicates_edit'),
 	);
-
-//	$form['#redirect'] = ‘featured_product_mgmt’;
-
-//  $form['submit'] = array (
-//    '#type' => 'submit',
-//    '#value' => t('Submit'),
-//    );
 
   return $form;
 }
@@ -169,8 +157,6 @@ function person_subform($form, $number) {
 
   // Commented fields are here in case we will need them
 
-
-
   // $form['container']['person'][$number]['personid'] = array (
   //   '#type'  => 'textfield',
   //   '#title' => t('personid'),
@@ -182,12 +168,6 @@ function person_subform($form, $number) {
   return $form;
 }
 
-//function duplicates_edit_theme() {
-//	return array(
-//		'duplicates_edit_form' => array('arguments' => array('form' => NULL),),
-//	);
-//}
-
 function duplicates_edit_theme($existing, $type, $theme, $path) {
   return array(
     'duplicates_edit_form_table' => array(
@@ -196,51 +176,10 @@ function duplicates_edit_theme($existing, $type, $theme, $path) {
   );
 }
 
-//function theme_duplicates_edit_form($form) {
 function theme_duplicates_edit_form_table($container) {
   $output = '';
 	$header = array();
 	$rows   = array();
-
-//    foreach($container as $field_name => $field) {
-//
-//    // All the fields were named 'node_' . $node->nid
-//    if (strpos($field_name, 'node_') === 0) {
-//
-//      $nid = substr($field_name, 5);
-//      $node = node_load($nid);
-//
-//      $rows[] = array(
-//        $node->nid,
-//        check_plain($node->field_person_first_name[0]['value']),
-//        check_plain($node->field_person_last_name[0]['value']),
-//        check_plain($node->field_person_email[0]['email']),
-//        drupal_render($field),
-//      );
-//
-//    }
-//  }
-//
-//  return theme_table($header, $rows);
-//  $form = person_subform($form, '1');
-//  $form = person_subform($form, '2');
-
-//  $form['container'][1]['last_name'] = array (
-//    '#type'  => 'textfield',
-//    '#title' => t('last_name'),
-//    '#default_value' => variable_get('last_name', ''),
-//    '#size'  => 40,
-//    '#maxlength' => 60,
-//  );
-//
-//  $form['container'][2]['last_name'] = array (
-//    '#type'  => 'textfield',
-//    '#title' => t('last_name'),
-//    '#default_value' => "Meeee",
-////      variable_get('last_name', ''),
-//    '#size'  => 40,
-//    '#maxlength' => 60,
-//  );
 
   $side_by_side_form_array = _transpose_form_array($container);
 
@@ -251,31 +190,18 @@ function theme_duplicates_edit_form_table($container) {
 	}
   $header = array('', t('First person'), t('Second Person'));
 
-//	$output = theme('table', $header, $rows);
   $output = theme_table($header, $rows);
   
-//  dpm("\$form = ");
-//  dpm($form);
 	$output .= drupal_render($form);
-//
-	return $output;
+
+  return $output;
 }
 
 function duplicates_edit_form_submit($form, &$form_state) {
-  dpm('Submit!');
-  dpm('$form');
-  dpm($form);
-//  in form is only second person! (keep is 0)
-  dpm('$form_state');
-  dpm($form_state);
   $good_node_nid = $bad_node_nid = 0;
   foreach ($form_state['values'] as $value) {
-  dpm('$value');
-  dpm($value);
-  dpm('$value[\'keep_this_node\'] = ');
-  dpm($value['keep_this_node']);
 
-//  TODO: save changes in form
+//  TODO: save node if smth is changed in a form
 //TODO: should work, if only one is checked,
 // handle another situation (1,1; 0,0)
     if (is_array($value)) {
@@ -287,8 +213,6 @@ function duplicates_edit_form_submit($form, &$form_state) {
       }
     }
   }
-  dpm('$bad_node_nid = ' . $bad_node_nid);
-  dpm('$good_node_nid = ' . $good_node_nid);
 
   if (!empty($good_node_nid) && !empty($bad_node_nid)) {
     $ref_node_nids = _collect_ref_nids($bad_node_nid, $good_node_nid);
@@ -308,8 +232,6 @@ function _collect_ref_nids($bad_node_nid, $good_node_nid) {
       $nids[$nid][]   = $field_name;
     }
   }
-  dpm('$nids = ');
-  dpm($nids);
   return $nids;
 }
 
@@ -330,7 +252,6 @@ function _update_ref_nodes($ref_node_nids, $bad_node_nid, $good_node_nid) {
         $node_ref->$ref_field = $new_ref_array;
       }
       node_save(&$node_ref);
-//      TODO: delete bad node
     }
   }
 }
