@@ -7,6 +7,7 @@ require_once('duplicates_edit_arrays.inc');
 
 function duplicates_edit_page()
 {
+  drupal_rebuild_theme_registry();
   return drupal_get_form('duplicates_edit_form');
 }
 
@@ -177,6 +178,7 @@ function duplicates_edit_theme($existing, $type, $theme, $path) {
 }
 
 function theme_duplicates_edit_form_table($container) {
+  
   $output = '';
 	$header = array();
 	$rows   = array();
