@@ -309,55 +309,12 @@ function _update_good_node($form_state) {
 
   foreach ($form_state['values'] as $form_value) {
     if ($form_value['keep_this_node'] == 1) {
-//      $good_values[] = $form_value;
       $person_g_node = node_load($form_value['nid']);
-      $person_g_node->field_person_state = Array (0 => Array ('value' => $form_value['state']));
-
-      dpm('$person_g_node = ');
-      dpm($person_g_node);
+      foreach ($person_field_names as $tag_name => $field_name) {
+        $person_g_node->$field_name = Array (0 => Array ('value' => $form_value[$tag_name]));        
+      }
+      node_save(&$person_g_node);
     }
   }
-//  dpm($good_values);
 }
 
-/*
-     'organization' => $form_state['values']['persons']['metadataProvider']['organization'],
-    'address'      => $form_state['values']['persons']['metadataProvider']['address'],
-    'city'         => $form_state['values']['persons']['metadataProvider']['city'],
-    'state'        => $form_state['values']['persons']['metadataProvider']['state'],
-    'zipcode'      => $form_state['values']['persons']['metadataProvider']['zipcode'],
-    'country'      => $form_state['values']['persons']['metadataProvider']['country'],
-    'phone'        => $form_state['values']['persons']['metadataProvider']['phone'],
-    'fax'          => $form_state['values']['persons']['metadataProvider']['fax'],
-    'role'         => $form_state['values']['persons']['metadataProvider']['role'],
-    'email'        => $form_state['values']['persons']['metadataProvider']['email'],
-
-  global $user;
-
-  $uid = $user->uid;
-  $node = new StdClass();
-  $node->type = "person";
-  $node->uid = $uid;
-  $node->field_person_organization = Array (0 => Array ('value' => $person_settings['organization']));
-  $node->field_person_address = Array (0 => Array ('value' => $person_settings['address']));
-  $node->field_person_city = Array (0 => Array ('value' => $person_settings['city']));
-  $node->field_person_state = Array (0 => Array ('value' => $person_settings['state']));
-  $node->field_person_zipcode = Array (0 => Array ('value' => $person_settings['zipcode']));
-  $node->field_person_country = Array (0 => Array ('value' => $person_settings['country']));
-  $node->field_person_phone = Array (0 => Array ('value' => $person_settings['phone']));
-  $node->field_person_fax = Array (0 => Array ('value' => $person_settings['fax']));
-  $node->field_person_role = Array (0 => Array ('value' => $person_settings['role']));
-  $node->field_person_email = Array (0 => Array ('email' => $person_settings['email']));
-
-  // Commented fields are here in case we will need them
-  // $node->field_person_title = Array (0 => Array ('value' => ''));
-  // $node->field_person_first_name = Array (0 => Array ('value' => ''));
-  // $node->field_person_last_name = Array (0 => Array ('value' => ''));
-  // $node->field_person_personid = Array (0 => Array ('value' => $personid));
-
-  node_save($node);
-
-  return $node->nid;
-}
-
- */
