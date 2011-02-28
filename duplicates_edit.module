@@ -9,7 +9,7 @@
 
 function duplicates_edit_menu() {
   $items = array();
-  $items['duplicates_edit'] = array (
+  $items['duplicates_edit'] = array(
     'title' => t('Edit duplicates'),
     'page callback' => 'duplicates_edit_page',
     'access arguments' => array('access content'),

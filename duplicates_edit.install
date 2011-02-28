@@ -3,5 +3,3 @@
   function duplicates_edit_uninstall() {
     variable_del('eml_settings_acronym');   
   }
-
-?>

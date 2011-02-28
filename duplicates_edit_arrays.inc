@@ -61,7 +61,7 @@ function states() {
 }
 
 function country_list() {
- $country_list = array (
+ $country_list = array(
    'United States' => t('United States'),
    'Abkhazia' => t('Abkhazia'),
    'Afghanistan' => t('Afghanistan'),
@@ -325,6 +325,7 @@ function _person_fields() {
     'phone'          => 'Phone',
     'fax'            => 'Fax',
     'email'          => 'Email',
+    'created'        => 'Created at',
     'keep_this_node' => 'Keep This Node',
   );
   return $person_fields;
@@ -351,7 +352,7 @@ function _person_field_names() {
 }
 
 function _ref_fields() {
-  $ref_fields = array (
+  $ref_fields = array(
     'content_field_datafile_site_ref'       => 'field_datafile_site_ref',
     'content_field_datafile_variable_ref'   => 'field_datafile_variable_ref',
     'content_field_dataset_biblio_ref'      => 'field_dataset_biblio_ref',
