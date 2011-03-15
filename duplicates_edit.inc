@@ -240,7 +240,7 @@ function _collect_ref_nids($bad_node_nid, $good_node_nid) {
   $nids         = array();
   foreach ($ref_fields as $tab_name => $field_name) {
     $full_field_name = $field_name . "_nid";
-    $sql        = "SELECT nid FROM {node} WHERE nid IN (SELECT nid FROM {'%s'} WHERE '%s' = %d);";
+    $sql        = "SELECT nid FROM {node} WHERE nid IN (SELECT nid FROM {%s} WHERE %s = %d);";
     $db_result  = db_query($sql, $tab_name, $full_field_name, (int)$bad_node_nid);
     while ($nid = db_result($db_result)) {
       $nids[$nid][]   = $field_name;
